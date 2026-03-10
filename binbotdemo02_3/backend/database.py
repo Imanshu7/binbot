@@ -423,6 +423,8 @@ waste_database = {
     "lanyard ribbon": {"category": "dry waste"}, 
     "bottle": {"category": "dry waste"},
     "water bottle": {"category": "dry waste"},
+    "paper": {"category": "dry waste"},
+    "paper bag": {"category": "dry waste"},
 
     #hazardous waste(yellow bin)
     "battery": {"category": "hazardous waste"},
@@ -607,6 +609,7 @@ waste_database = {
     "e waste": {"category": "e waste"},
     "rechargeable nicd battery pack": {"category": "e waste"},
     "rechargeable lithium battery pack": {"category": "e waste"},
+    "mobile phone": {"category": "e waste"},
     "mobile phone battery": {"category": "e waste"},
     "laptop battery": {"category": "e waste"},
     "tablet battery": {"category": "e waste"},
