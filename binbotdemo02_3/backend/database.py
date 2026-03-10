@@ -237,6 +237,8 @@ waste_database = {
 
     #dry waste(blue bin)
     "plastic bottle": {"category": "dry waste"},
+    "carton": {"category": "dry waste"},
+    "notebook": {"category": "dry waste"},
     "aluminum can": {"category": "dry waste"},
     "paper cup": {"category": "dry waste"},
     "cardboard box": {"category": "dry waste"},
@@ -970,3 +972,4 @@ def get_waste_info(item_name: str):
     if name_clean in waste_database:
         return waste_database[name_clean]
     return None
+
