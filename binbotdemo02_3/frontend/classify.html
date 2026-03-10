@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classify - BinBot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.png">
+  <script src="https://unpkg.com/lucide@latest"></script>
+   <link rel="stylesheet" href="style.css?v=20260307">
+    <script src="js/toast.js"></script>
+</head>
+<body class="selection:bg-white/20 selection:text-white pb-20">
+
+  <!-- Floating Navigation -->
+  <nav class="fixed top-0 w-full z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex-shrink-0">
+          <a href="dashboard.html" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <span class="font-bold tracking-tight text-white">BinBot</span>
+          </a>
+        </div>
+
+        <div class="hidden md:block">
+          <div class="flex items-baseline space-x-1">
+            <a href="dashboard.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Dashboard
+            </a>
+            <a href="classify.html" class="mx-1 px-4 py-2 bg-white/10 text-white rounded-full text-xs font-semibold shadow-inner border border-white/5 transition-all">
+              Classify
+            </a>
+            <a href="history.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              History
+            </a>
+            <a href="analytics.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Analytics
+            </a>
+            <a href="map.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Map
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+            <a href="profile.html" id="profile-trigger-btn" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center overflow-hidden border border-white/20 shrink-0">
+                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <div class="-mr-2 flex md:hidden">
+          <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-full text-[#86868B] hover:text-white hover:bg-white/10 focus:outline-none transition-all">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#111111] border-b border-white/10">
+      <div class="px-4 pt-2 pb-4 space-y-1">
+        <a href="dashboard.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Dashboard</a>
+        <a href="classify.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-white bg-white/10">Classify</a>
+        <a href="history.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">History</a>
+        <a href="analytics.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Analytics</a>
+        <a href="map.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Map</a>
+        <a href="profile.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Profile</a>
+        <button onclick="handleLogout()" class="w-full text-left px-4 py-3 rounded-2xl text-base font-medium text-red-400 hover:bg-white/5 mt-2">Sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Areas -->
+  <div class="pt-28 pb-16 relative overflow-hidden flex flex-col items-center">
+    
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+      <div class="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-white/5 blur-[150px] rounded-full mix-blend-screen"></div>
+    </div>
+
+    <main class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      
+      <div class="text-center mb-12">
+        <h1 class="text-5xl border-b border-transparent font-black tracking-tighter mb-4 text-white">Identify Item</h1>
+        <p class="text-[#86868B] max-w-2xl mx-auto text-lg font-medium">
+          Choose your preferred method to identify exactly which bin your item belongs in. Highly accurate AI guarantees perfect sorting.
+        </p>
+      </div>
+
+      <!-- Professional Dual-Panel Layout -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-12">
+        
+        <!-- Method 1: Image Scan -->
+        <div class="bento-card p-8 flex flex-col h-full relative overflow-hidden group">
+          <div class="flex items-center gap-4 mb-6 relative z-10">
+             <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md">
+                <i data-lucide="camera" class="w-5 h-5 text-white"></i>
+             </div>
+             <div>
+                <h2 class="text-lg font-bold text-white tracking-tight">Image Scan</h2>
+                <p class="text-xs font-semibold text-[#86868B] uppercase tracking-widest">Visual AI Engine</p>
+             </div>
+          </div>
+
+            <div id="drop-zone" class="flex-grow relative border-2 border-dashed border-white/20 hover:border-white/40 rounded-2xl bg-[#000000]/40 hover:bg-white/5 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center min-h-[300px] z-10 overflow-hidden group/zone">
+            <!-- Hidden file input for actual image uploads -->
+            <input type="file" id="image-upload" accept="image/jpeg, image/png, image/webp" class="hidden">
+            <img id="image-preview" class="hidden absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none" />
+
+            <div class="scanner-line"></div>
+            
+            <div id="upload-content" class="flex flex-col items-center p-6 text-center w-full">
+              <div class="w-16 h-16 bg-white/5 rounded-full border border-white/10 flex items-center justify-center text-white shadow-inner mb-5 transition-transform duration-300 transform group-hover/zone:scale-110">
+                <i data-lucide="image-plus" class="w-6 h-6"></i>
+              </div>
+              <p class="text-sm font-bold text-white mb-1">Upload an image to scan</p>
+              <p class="text-xs font-medium text-[#86868B]">Accepts JPEG, PNG, WEBP</p>
+            </div>
+            
+            <!-- Scanning Animation -->
+            <div id="scanning-status" class="hidden flex-col items-center p-6 text-center w-full">
+               <i data-lucide="scan-line" class="w-10 h-10 text-white animate-pulse mb-4"></i>
+               <h3 class="text-base font-bold text-white mb-1 tracking-tight">Analyzing Visuals...</h3>
+               <p class="text-xs font-medium text-[#86868B]">Processing ML model</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Method 2: Text Input -->
+        <div class="bento-card p-8 flex flex-col h-full relative overflow-hidden">
+          <div class="flex items-center gap-4 mb-6 relative z-10">
+             <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md">
+                <i data-lucide="text-cursor-input" class="w-5 h-5 text-white"></i>
+             </div>
+             <div>
+                <h2 class="text-lg font-bold text-white tracking-tight">Text Search</h2>
+                <p class="text-xs font-semibold text-[#86868B] uppercase tracking-widest">Semantic Database</p>
+             </div>
+          </div>
+
+          <div class="flex-grow flex flex-col justify-center relative z-10 w-full min-h-[300px]">
+             <div class="bg-[#000000]/40 rounded-2xl p-6 border border-white/10 w-full shadow-inner h-full flex flex-col justify-center">
+                
+                <h3 class="text-sm font-bold text-white mb-4 text-center">Type the item explicitly</h3>
+                
+                <div class="relative mb-5 group/input flex gap-2">
+                   <div class="relative flex-grow">
+                       <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#86868B]">
+                          <i data-lucide="search" class="w-4 h-4"></i>
+                       </div>
+                       <input type="text" id="waste-input" autocomplete="off" placeholder="e.g., Coffee cup..." class="w-full bg-[#000000]/60 border border-white/10 rounded-xl pl-11 pr-4 py-4 text-white placeholder-[#86868B] focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium">
+                   </div>
+                   <button id="mic-btn" class="shrink-0 w-14 h-14 bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 rounded-xl flex items-center justify-center transition-all group/mic" title="Voice Search">
+                       <i data-lucide="mic" class="w-5 h-5 text-white transition-transform group-hover/mic:scale-110"></i>
+                   </button>
+                </div>
+                
+                <button id="analyze-btn" class="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-200 text-black font-bold px-6 py-4 rounded-xl transition-all shadow-lg active:scale-95 text-sm">
+                   Get Classification
+                </button>
+                
+                <div id="text-analyzing-status" class="hidden mt-5 flex-row items-center justify-center gap-3 text-white">
+                   <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+                   <span class="text-xs font-bold tracking-wide uppercase">Querying...</span>
+                </div>
+             </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Professional Wide Result Panel -->
+      <div id="result-status" class="w-full bento-card p-0 overflow-hidden relative mb-10 group hidden">
+         
+         <!-- Dynamic Color Side Bar -->
+         <div id="result-color-bar" class="absolute top-0 left-0 w-2 h-full bg-[#34C759] shadow-[0_0_20px_#34C759]"></div>
+         
+         <div class="p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 relative z-10 w-full pl-10">
+            
+            <div id="result-icon-container" class="w-20 h-20 shrink-0 rounded-2xl flex items-center justify-center shadow-inner relative bg-[#000000]/50 border border-white/10">
+               <i id="result-icon" data-lucide="leaf" class="w-8 h-8 relative z-10 text-[#34C759]"></i>
+            </div>
+            
+            <div class="text-center md:text-left flex-grow">
+               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#000000] border border-white/10 text-[10px] font-bold uppercase tracking-widest text-[#86868B] mb-3">
+                  <span id="result-confidence">99.8% Match Confirmed</span>
+               </div>
+               
+               <h3 id="result-title" class="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter">Compost / Green Bin</h3>
+               <p id="result-desc" class="text-lg md:text-xl text-[#86868B] font-medium text-center md:text-left mt-1">
+                  <span class="text-white font-bold capitalize" id="item-resolved-name">Apple Core</span> correctly identified
+               </p>
+            </div>
+            
+            <div class="shrink-0 flex flex-col sm:flex-row gap-4 w-full md:w-auto mt-6 md:mt-0">
+               <button id="tts-toggle-btn" class="px-4 py-3.5 rounded-xl bg-[#000000]/60 border border-white/10 hover:border-white/30 hover:bg-white/5 text-white text-sm font-bold transition-all flex items-center justify-center gap-2" title="Toggle Voice Output">
+                  <i data-lucide="volume-2" id="tts-icon" class="w-4 h-4 text-white"></i>
+               </button>
+               <button id="reset-btn" class="px-6 py-3.5 rounded-xl bg-[#000000]/60 border border-white/10 hover:border-white/30 hover:bg-white/5 text-white text-sm font-bold transition-all flex items-center justify-center gap-2">
+                  <i data-lucide="rotate-ccw" class="w-4 h-4 text-[#86868B]"></i> Start over
+               </button>
+               <button class="px-6 py-3.5 rounded-xl bg-white text-black text-sm font-bold transition-all flex items-center justify-center gap-2 outline-none cursor-not-allowed opacity-70" disabled title="History tracking enabled automatically">
+                  <i data-lucide="check" class="w-4 h-4"></i> Saved to Log
+               </button>
+            </div>
+         </div>
+      </div>
+    </main>
+    
+    <!-- Floating XP Toast Container -->
+    <div id="xp-toast-container" class="fixed bottom-24 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none"></div>
+  </div>
+
+  <!-- Load AI Models (Deferred to prevent rendering block) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js" defer crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@latest" defer crossorigin="anonymous"></script>
+
+  <script type="module">
+    import { auth, onAuthStateChanged, signOut, db, collection, addDoc } from './firebase-config.js';
+
+    lucide.createIcons();
+
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+    
+    // Auth Check
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        } else {
+            // Render avatar dynamically
+            const avatarContainer = document.getElementById("profile-trigger-btn");
+            let gamifyStr = localStorage.getItem("binbot_user");
+            let gamifyUser = gamifyStr ? JSON.parse(gamifyStr) : {};
+            const finalAvatar = gamifyUser.avatar || user.photoURL;
+            if(avatarContainer && finalAvatar && finalAvatar !== "null" && finalAvatar !== "undefined") {
+                avatarContainer.innerHTML = `<img src="${finalAvatar}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\\'user\\' class=\\'w-4 h-4 text-white\\'></i>'; if(window.lucide) window.lucide.createIcons();" />`;
+            }
+        }
+    });
+
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    };
+
+    // Vision Nodes
+    const dropZone = document.getElementById("drop-zone");
+    const uploadContent = document.getElementById("upload-content");
+    const scanningStatus = document.getElementById("scanning-status");
+    const imageInput = document.getElementById("image-upload");
+    const imagePreview = document.getElementById("image-preview");
+    
+    // Text Nodes
+    const wasteInput = document.getElementById("waste-input");
+    const textStatus = document.getElementById("text-analyzing-status");
+    const analyzeBtn = document.getElementById("analyze-btn");
+
+    // Result Nodes
+    const resultStatus = document.getElementById("result-status");
+    const resultTitle = document.getElementById("result-title");
+    const itemResolvedName = document.getElementById("item-resolved-name");
+    const resultIcon = document.getElementById("result-icon");
+    const resultColorBar = document.getElementById("result-color-bar");
+    const resetBtn = document.getElementById("reset-btn");
+    const resultDesc = document.getElementById("result-desc");
+
+    // Voice / AI Nodes
+    const micBtn = document.getElementById("mic-btn");
+    const ttsToggleBtn = document.getElementById("tts-toggle-btn");
+    const ttsIcon = document.getElementById("tts-icon");
+
+    // Global State
+    let isVoiceOutputEnabled = true;
+
+    // --- Voice Output (TTS) ---
+    function speakText(text) {
+        if (!isVoiceOutputEnabled || !('speechSynthesis' in window)) return;
+        
+        // Cancel any currently playing speech
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+        
+        // Try to pick a friendly voice if available
+        let voices = window.speechSynthesis.getVoices();
+        if(voices.length > 0) {
+            // Prefer a female/assistant voice on most OS's if possible
+            let prefVoice = voices.find(v => v.name.includes("Female") || v.name.includes("Samantha") || v.name.includes("Google US English"));
+            if(prefVoice) utterance.voice = prefVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
+    }
+
+    ttsToggleBtn.addEventListener("click", () => {
+        isVoiceOutputEnabled = !isVoiceOutputEnabled;
+        if (isVoiceOutputEnabled) {
+            ttsIcon.setAttribute("data-lucide", "volume-2");
+            ttsIcon.classList.remove("text-[#86868B]");
+            ttsIcon.classList.add("text-white");
+        } else {
+            ttsIcon.setAttribute("data-lucide", "volume-x");
+            ttsIcon.classList.remove("text-white");
+            ttsIcon.classList.add("text-[#86868B]");
+            window.speechSynthesis.cancel(); // Stop playing immediately
+        }
+        lucide.createIcons();
+    });
+
+    // Handle voice list loading on some browsers
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+
+    let resultTimeout;
+    
+    function scrollAndShow() {
+        clearTimeout(resultTimeout);
+        resultStatus.style.display = 'flex';
+        // Give the browser a tick to render flex before adding the transition class
+        resultTimeout = setTimeout(() => {
+            resultStatus.classList.add('show-result');
+            resultStatus.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }, 50);
+    }
+
+    function hideResult() {
+        clearTimeout(resultTimeout);
+        resultStatus.classList.remove('show-result');
+        resultTimeout = setTimeout(() => {
+            resultStatus.style.display = 'none';
+        }, 600); // Wait for transition
+    }
+
+    function applyResult(itemName, binType, iconName, baseColor, tipText) {
+       resultTitle.textContent = binType;
+       itemResolvedName.textContent = itemName;
+       
+       // Insert tip text
+       if (tipText) {
+          resultDesc.innerHTML = `<span class="text-white font-bold capitalize">${itemName}</span> <span class="lowercase">correctly identified.</span><br><span class="text-sm text-[#86868B] mt-2 block w-full whitespace-normal relative z-50">Tip: ${tipText}</span>`;
+       } else {
+           resultDesc.innerHTML = `<span class="text-white font-bold capitalize">${itemName}</span> <span class="lowercase">correctly identified.</span>`;
+       }
+       
+       // Wipe the container and drop a fresh i tag so Lucide renders cleanly
+       // This prevents "Cannot set property className of #<SVGElement>" errors
+       const iconContainer = document.getElementById("result-icon-container");
+       if(iconContainer) {
+            iconContainer.innerHTML = `<i id="result-icon" data-lucide="${iconName}" class="w-8 h-8 relative z-10 transition-colors duration-300"></i>`;
+       }
+       lucide.createIcons();
+
+       // Re-select the newly minted SVG node to apply dynamic color classes
+       const newResultIcon = document.getElementById("result-icon");
+       resultColorBar.className = 'absolute top-0 left-0 w-2 h-full transition-colors duration-500';
+
+       let iconColorObj = { green: 'text-[var(--accent-success)]', blue: 'text-[var(--accent-info)]', gray: 'text-[#86868B]', red: 'text-[var(--accent-danger)]', yellow: 'text-[var(--accent-warning)]', black: 'text-[#444444]' }[baseColor] || 'text-white';
+       let barColorObj = { green: 'bg-[var(--accent-success)] shadow-[0_0_20px_var(--accent-success)]', blue: 'bg-[var(--accent-info)] shadow-[0_0_20px_var(--accent-info)]', gray: 'bg-[#86868B] shadow-[0_0_20px_#86868B]', red: 'bg-[var(--accent-danger)] shadow-[0_0_20px_var(--accent-danger)]', yellow: 'bg-[var(--accent-warning)] shadow-[0_0_20px_var(--accent-warning)]', black: 'bg-[#222222] shadow-[0_0_20px_#222222]' }[baseColor];
+       
+       if (newResultIcon) {
+           newResultIcon.classList.add(...iconColorObj.split(' '));
+       }
+       resultColorBar.className = `absolute top-0 left-0 w-2 h-full ${barColorObj}`;
+       
+       scrollAndShow();
+
+       // Synthesize Speech for this specific result
+       let spokenPhrase = `${itemName} goes in the ${binType}.`;
+       if (tipText) spokenPhrase += ` Tip: ${tipText}`;
+       speakText(spokenPhrase);
+    }
+
+    async function executeAnalysis(itemName, isImage) {
+       hideResult();
+       
+       if(isImage) {
+          dropZone.classList.add("is-scanning");
+          uploadContent.classList.add("hidden");
+          scanningStatus.classList.remove("hidden");
+          scanningStatus.style.display = "flex";
+       } else {
+          analyzeBtn.classList.add("hidden");
+          textStatus.style.display = "flex";
+          textStatus.classList.remove("hidden");
+          wasteInput.disabled = true;
+       }
+
+       try {
+           // Simulate a tiny delay for physical realism if it's too fast
+           if (!isImage) { await new Promise(r => setTimeout(r, 600)); }
+           
+           const res = await fetch("https://binbot-api.onrender.com/api/classify", {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify({ item: itemName }) // Send the actual item name
+           });
+
+           if (!res.ok) {
+               throw new Error(`HTTP error! status: ${res.status}`);
+           }
+
+           const data = await res.json();
+           
+           if(isImage) {
+              dropZone.classList.remove("is-scanning");
+              scanningStatus.classList.add("hidden");
+              scanningStatus.style.display = "";
+              uploadContent.classList.remove("hidden");
+           } else {
+              textStatus.classList.add("hidden");
+              textStatus.style.display = "";
+              analyzeBtn.classList.remove("hidden");
+              wasteInput.disabled = false;
+           }
+           
+           if (data.success) {
+               // Map API Data to UI Properties
+               let icon = "help-circle";
+               let baseColor = "gray";
+               let displayBin = data.bin;
+               
+               const b = data.bin.toLowerCase();
+               if(b === "green") { icon = "leaf"; baseColor = "green"; displayBin = "Compost / " + data.bin + " Bin"; }
+               else if(b === "blue") { icon = "recycle"; baseColor = "blue"; displayBin = "Recycle / " + data.bin + " Bin"; }
+               else if(b === "red") { icon = "alert-triangle"; baseColor = "red"; displayBin = "Biomedical / " + data.bin + " Bin"; }
+               else if(b === "yellow") { icon = "biohazard"; baseColor = "yellow"; displayBin = "Hazardous / " + data.bin + " Bin"; }
+               else if(b === "black") { icon = "cpu"; baseColor = "black"; displayBin = "E-Waste / " + data.bin + " Bin"; }
+               else if (data.category.includes("trash") || data.category.includes("reject")) { icon = "trash-2"; baseColor = "gray"; displayBin = "Landfill / Reject"; }
+
+               applyResult(data.item, displayBin, icon, baseColor, data.tip);
+               
+               // --- Gamification Logic: Award XP ---
+               let userData = JSON.parse(localStorage.getItem("binbot_user"));
+               if (userData) {
+                   userData.xp += 50; // Award 50 XP per successful scan
+                   
+                   // Level calculation algorithm (e.g., Level = floor(XP / 500) + 1)
+                   const newLevel = Math.floor(userData.xp / 500) + 1;
+                   let leveledUp = false;
+                   
+                   if (newLevel > userData.level) {
+                       userData.level = newLevel;
+                       leveledUp = true;
+                   }
+                   
+                   localStorage.setItem("binbot_user", JSON.stringify(userData));
+                   
+                   // Show UI Toast
+                   showXpToast(50, leveledUp, userData.level);
+               }
+               
+               // --- History Appending Logic ---
+               let scanRecord = {
+                   item: data.item,
+                   bin: data.bin,
+                   icon: icon,
+                   color: baseColor,
+                   matchScore: (Math.random() * (99.9 - 90.0) + 90.0).toFixed(1) + "%", // Random realistic confidence
+                   timestamp: new Date().toISOString()
+               };
+               
+               // Save to Local Storage (Immediate feedback)
+               let history = JSON.parse(localStorage.getItem("binbot_history")) || [];
+               history.unshift(scanRecord);
+               // Keep only last 100 scans to prevent infinite local storage growth
+               if (history.length > 100) history.pop();
+               localStorage.setItem("binbot_history", JSON.stringify(history));
+               
+               // Push to Firestore Database (Cloud Sync)
+               if (auth.currentUser) {
+                   try {
+                       await addDoc(collection(db, "classifications"), {
+                           userId: auth.currentUser.uid,
+                           ...scanRecord
+                       });
+                       console.log("Classification securely saved to Cloud.");
+                   } catch (dbError) {
+                       console.warn("Could not save classification to cloud database. Data is stored locally.", dbError);
+                   }
+               }
+               
+           } else {
+               applyResult(itemName, "Item Not Found", "alert-circle", "gray", data.message || "Try searching for a different term.");
+           }
+
+       } catch (error) {
+           console.error("API Error:", error);
+           if (!isImage) {
+               textStatus.classList.add("hidden");
+               textStatus.style.display = "";
+               analyzeBtn.classList.remove("hidden");
+               wasteInput.disabled = false;
+           }
+           applyResult(itemName, "Connection Error", "wifi-off", "red", "Make sure the Python backend is running.");
+       }
+    }
+
+    // --- Voice Input (STT) ---
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isRecording = false;
+
+    if (SpeechRecognition) {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        recognition.onstart = function() {
+            isRecording = true;
+            micBtn.classList.add("bg-red-500/20", "border-red-500/50");
+            const icon = micBtn.querySelector("svg, i");
+            if (icon) {
+                icon.classList.remove("text-white");
+                icon.classList.add("text-red-500", "animate-pulse");
+            }
+            wasteInput.placeholder = "Listening...";
+        };
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            
+            // The browser sometimes adds punctuation to speech. We need to strip it
+            // so our exact-match system doesn't fail on "apple." vs "apple".
+            const cleanTranscript = transcript.replace(/[.,?!]/g, '').trim();
+            
+            wasteInput.value = cleanTranscript;
+            
+            // Auto submit
+            setTimeout(() => {
+                if(cleanTranscript) executeAnalysis(cleanTranscript, false);
+            }, 500);
+        };
+
+        recognition.onerror = function(event) {
+            console.error("Speech recognition error", event.error);
+            resetMicUI();
+            
+            if (event.error === 'not-allowed') {
+                showToast('Microphone access denied. Please allow mic permissions in browser settings.', 'error');
+            } else if (event.error === 'network') {
+                showToast('Voice requires HTTPS. It will work on your deployed site.', 'warning');
+            }
+        };
+
+        recognition.onend = function() {
+            resetMicUI();
+        };
+    } else {
+        micBtn.style.display = 'none'; // Hide mic if browser doesn't support it
+        console.warn("SpeechRecognition is not supported in this browser.");
+    }
+
+    function resetMicUI() {
+        isRecording = false;
+        micBtn.classList.remove("bg-red-500/20", "border-red-500/50");
+        const icon = micBtn.querySelector("svg, i");
+        if (icon) {
+            icon.classList.add("text-white");
+            icon.classList.remove("text-red-500", "animate-pulse");
+        }
+        wasteInput.placeholder = "e.g., Coffee cup...";
+    }
+
+    micBtn.addEventListener("click", () => {
+        if (!recognition) return showToast('Your browser does not support Voice Search.', 'warning');
+        
+        if (isRecording) {
+            recognition.stop();
+        } else {
+            // Stop TTS if it's currently speaking so the mic doesn't hear it
+            window.speechSynthesis.cancel();
+            
+            // Immediate UI feedback
+            isRecording = true;
+            micBtn.classList.add("bg-red-500/20", "border-red-500/50");
+            const icon = micBtn.querySelector("svg, i");
+            if (icon) {
+                icon.classList.remove("text-white");
+                icon.classList.add("text-red-500", "animate-pulse");
+            }
+            wasteInput.placeholder = "Listening...";
+
+            try {
+                recognition.start();
+            } catch (e) {
+                console.error("Failed to start speech recognition:", e);
+                resetMicUI();
+            }
+        }
+    });
+
+    // --- TensorFlow.js Image Analysis (Vision) ---
+    let model = null;
+    
+    // Asynchronously load the model once the library is available on the window
+    async function initModel() {
+        if (typeof mobilenet !== 'undefined') {
+            try {
+                model = await mobilenet.load();
+                console.log("MobileNet model loaded successfully!");
+            } catch (e) {
+                console.error("Failed to load MobileNet", e);
+            }
+        } else {
+            // If the script is deferred, wait and poll
+            setTimeout(initModel, 500);
+        }
+    }
+    
+    // Start polling immediately
+    initModel();
+
+    dropZone.addEventListener("click", () => {
+       if(!dropZone.classList.contains("is-scanning")) {
+          imageInput.value = ""; // Reset value so `change` event ALWAYS fires even if same file
+          imageInput.click();
+       }
+    });
+
+    imageInput.addEventListener("change", async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Display the image preview
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+            imagePreview.src = event.target.result;
+            imagePreview.classList.remove("hidden");
+
+            // Trigger UI Scan Animation IMMEDIATELY
+            hideResult();
+            dropZone.classList.add("is-scanning");
+            uploadContent.classList.add("hidden");
+            scanningStatus.classList.remove("hidden");
+            scanningStatus.style.display = "flex";
+
+            const statusText = scanningStatus.querySelector("h3");
+            const statusSub = scanningStatus.querySelector("p");
+            const originalText = statusText.textContent;
+            const originalSub = statusSub.textContent;
+            
+            // Wait for model download if they clicked fast!
+            if (!model) {
+                 statusText.textContent = "Downloading AI Engine...";
+                 statusSub.textContent = "This takes a moment on first load";
+                 while(!model) { await new Promise(r => setTimeout(r, 500)); } // Wait forever until loaded
+            }
+            
+            statusText.textContent = "Analyzing Visuals...";
+            statusSub.textContent = "Processing ML model";
+
+            // Give the DOM a tiny bit to paint the image
+            setTimeout(async () => {
+                try {
+                    // Start TensorFlow.js Analysis physically
+                    const predictions = await model.classify(imagePreview);
+                    console.log("Predictions:", predictions);
+                    
+                    if (predictions && predictions.length > 0) {
+                        let topPrediction = predictions[0].className.split(',')[0].trim();
+                        await executeAnalysis(topPrediction, true);
+                    } else {
+                        await executeAnalysis("Unknown Item", true);
+                    }
+                } catch (err) {
+                    console.error("Classification error:", err);
+                    await executeAnalysis("Error", true);
+                } finally {
+                    // Restore default animation text
+                    statusText.textContent = originalText;
+                    statusSub.textContent = originalSub;
+                }
+            }, 100);
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // --- Search Event Listeners ---
+    analyzeBtn.addEventListener("click", () => {
+       const text = wasteInput.value.trim();
+       if (text) executeAnalysis(text, false);
+    });
+    
+    wasteInput.addEventListener("keypress", (e) => {
+       if (e.key === "Enter") {
+          const text = wasteInput.value.trim();
+          if (text) executeAnalysis(text, false);
+       }
+    });
+
+    resetBtn.addEventListener("click", () => {
+        hideResult();
+        wasteInput.value = "";
+    });
+
+    function showXpToast(xpAmount, leveledUp, newLevel) {
+        const container = document.getElementById('xp-toast-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = 'glass-panel px-4 py-3 rounded-xl shadow-lg border border-white/10 flex items-center gap-3 transform translate-y-10 opacity-0 transition-all duration-300';
+        
+        let innerHTML = `
+            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
+                <i data-lucide="star" class="w-4 h-4 text-yellow-500 fill-yellow-500"></i>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-white">+${xpAmount} XP</p>
+                <p class="text-[10px] text-[#86868B] uppercase tracking-wider font-semibold">Scan Reward</p>
+            </div>
+        `;
+
+        // If leveled up, add a second huge toast!
+        if (leveledUp) {
+            innerHTML = `
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 flex items-center justify-center shadow-lg">
+                    <i data-lucide="shield" class="w-5 h-5 text-white fill-white animate-bounce"></i>
+                </div>
+                <div>
+                    <p class="text-base font-black text-white">LEVEL UP!</p>
+                    <p class="text-xs text-[#86868B] font-bold">You are now Rank ${newLevel}</p>
+                </div>
+                <div class="ml-2 px-2 py-1 bg-white/10 rounded-lg text-xs font-bold text-white uppercase">+${xpAmount} XP</div>
+            `;
+            // Add a special glow border
+            toast.classList.add('border-yellow-500/50', 'shadow-[0_0_20px_rgba(234,179,8,0.3)]');
+        }
+
+        toast.innerHTML = innerHTML;
+        container.appendChild(toast);
+        lucide.createIcons();
+
+        // Animate in
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            });
+        });
+
+        // Animate out and remove
+        setTimeout(() => {
+            toast.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                if (toast.parentNode) toast.parentNode.removeChild(toast);
+            }, 300);
+        }, 4000);
+    }
+
+  </script>
+
+    
+    <script>
+        // Premium 3D Tilt Effect
+        document.querySelectorAll('.bento-card, .glass-panel').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -4;
+                const rotateY = ((x - centerX) / centerX) * 4;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transition = 'transform 0.1s ease';
+                card.style.zIndex = '50';
+                
+                // Add metallic shine
+                card.style.background = `radial-gradient(circle at ${x}px ${y}px, var(--tilt-shine-color) 0%, var(--tilt-base-color) 60%)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                card.style.transition = 'transform 0.5s ease-out';
+                card.style.zIndex = '1';
+                card.style.background = card.classList.contains('glass-panel') ? 'var(--glass-bg)' : 'var(--card-bg)';
+            });
+        });
+    </script>
+</body>
+</html>

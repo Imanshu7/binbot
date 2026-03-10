@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>BinBot Icon Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <link rel="icon" href="favicon.png">
+  <style>
+    body { background: #111; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; gap: 24px; font-family: system-ui; }
+  </style>
+</head>
+<body>
+
+  <!-- The exact BinBot icon at 512x512 -->
+  <div id="icon-render" style="width:512px; height:512px;" class="rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border-[4px] border-emerald-500/30 flex items-center justify-center shadow-[0_0_60px_rgba(16,185,129,0.15)]">
+    <i data-lucide="leaf" style="width:240px; height:240px;" class="text-emerald-400"></i>
+  </div>
+
+  <p style="color:#888; font-size:14px; margin-top:16px;">Click the button below to download the exact icon as PNG</p>
+
+  <button onclick="downloadIcon()" style="padding:12px 32px; background:white; color:black; border:none; border-radius:12px; font-weight:bold; font-size:14px; cursor:pointer;">
+    Download as PNG (512×512)
+  </button>
+
+  <script>
+    lucide.createIcons();
+
+    function downloadIcon() {
+      const icon = document.getElementById('icon-render');
+      html2canvas(icon, {
+        backgroundColor: null,
+        scale: 1,
+        width: 512,
+        height: 512,
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'binbot-icon-512.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics - BinBot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.png">
+  <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css?v=20260307">
+
+</head>
+<body class="selection:bg-white/20 selection:text-white pb-20">
+
+  <nav class="fixed top-0 w-full z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex-shrink-0">
+          <a href="dashboard.html" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <span class="font-bold tracking-tight text-white">BinBot</span>
+          </a>
+        </div>
+
+        <div class="hidden md:block">
+          <div class="flex items-baseline space-x-1">
+            <a href="dashboard.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Dashboard
+            </a>
+            <a href="classify.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Classify
+            </a>
+            <a href="history.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              History
+            </a>
+            <a href="analytics.html" class="mx-1 px-4 py-2 bg-white/10 text-white rounded-full text-xs font-semibold shadow-inner border border-white/5 transition-all">
+              Analytics
+            </a>
+            <a href="map.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Map
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+            <a href="profile.html" id="profile-trigger-btn" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center overflow-hidden border border-white/20 shrink-0">
+                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+            </a>
+        </div>
+        
+        <div class="-mr-2 flex md:hidden">
+          <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-full text-[#86868B] hover:text-white hover:bg-white/10 focus:outline-none transition-all">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#111111] border-b border-white/10">
+      <div class="px-4 pt-2 pb-4 space-y-1">
+        <a href="dashboard.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Dashboard</a>
+        <a href="classify.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Classify</a>
+        <a href="history.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">History</a>
+        <a href="analytics.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-white bg-white/10">Analytics</a>
+        <a href="map.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Map</a>
+        <a href="profile.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Profile</a>
+        <button onclick="handleLogout()" class="w-full text-left px-4 py-3 rounded-2xl text-base font-medium text-red-400 hover:bg-white/5 mt-2">Sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Ambient Glow -->
+  <div class="absolute top-0 right-[-10%] w-[600px] h-[600px] bg-emerald-500 blur-[120px] opacity-[0.15] rounded-full pointer-events-none hidden md:block"></div>
+
+  <!-- Main Content -->
+  <div class="pt-28 pb-16 px-4 max-w-7xl mx-auto relative z-10">
+      
+    <div class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-4xl font-black tracking-tight text-white mb-1">Impact Analytics</h1>
+            <p class="text-[#86868B] font-medium text-sm">Visualize your contribution to a zero-waste future.</p>
+        </div>
+        <div class="flex gap-2" id="time-filters">
+            <button id="btn-filter-week" class="px-4 py-2 border border-white/10 bg-white/5 rounded-lg text-xs font-bold text-white transition-colors">Week</button>
+            <button id="btn-filter-month" class="px-4 py-2 border border-transparent rounded-lg text-xs font-bold text-[#86868B] hover:text-white transition-colors">Month</button>
+            <button id="btn-filter-year" class="px-4 py-2 border border-transparent rounded-lg text-xs font-bold text-[#86868B] hover:text-white transition-colors">Year</button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 auto-rows-[auto]">
+        
+        <!-- Bar Chart Visual (Diversion over time) -->
+        <div class="bento-card p-8 lg:col-span-2">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
+                <div>
+                    <h3 class="font-bold text-white text-lg tracking-tight mb-1">Waste Diversion Trend</h3>
+                    <p class="text-xs font-medium text-[#86868B] uppercase tracking-widest">Recycled and Composted Items / Day</p>
+                </div>
+                <div class="flex items-center gap-4 mt-4 sm:mt-0">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-[#0071E3]"></div>
+                        <span class="text-xs font-bold text-white">Recycled</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-[#34C759]"></div>
+                        <span class="text-xs font-bold text-white">Composted</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded bg-[#86868B]"></div>
+                        <span class="text-xs font-bold text-white">Trash</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Bar Chart -->
+            <div id="diversion-chart" class="chart-container mb-6">
+                <!-- Javascript will inject dynamic bars here based on the selected time range -->
+            </div>
+            <!-- Horizontal axis line -->
+            <div class="w-full h-px bg-white/10 mt-6 md:mt-0"></div>
+        </div>
+
+        <!-- Breakdown Pie Chart alternative (Status blocks) -->
+        <div class="bento-card p-8 flex flex-col justify-center">
+            <h3 class="font-bold text-white text-lg tracking-tight mb-8">Category Breakdown</h3>
+            
+            <div class="space-y-6">
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="recycle" class="w-4 h-4 text-[#0071E3]"></i>
+                            <span class="text-sm font-bold text-white">Recycled</span>
+                        </div>
+                        <span id="pct-recycle" class="text-sm font-bold text-white">0%</span>
+                    </div>
+                    <div class="w-full bg-white/5 rounded-full h-2.5 shadow-inner overflow-hidden">
+                        <div id="bar-recycle" class="bg-[#0071E3] h-2.5 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="leaf" class="w-4 h-4 text-[#34C759]"></i>
+                            <span class="text-sm font-bold text-white">Composted</span>
+                        </div>
+                        <span id="pct-compost" class="text-sm font-bold text-white">0%</span>
+                    </div>
+                    <div class="w-full bg-white/5 rounded-full h-2.5 shadow-inner overflow-hidden">
+                        <div id="bar-compost" class="bg-[#34C759] h-2.5 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="trash-2" class="w-4 h-4 text-[#86868B]"></i>
+                            <span class="text-sm font-bold text-white">Trash</span>
+                        </div>
+                        <span id="pct-trash" class="text-sm font-bold text-white">0%</span>
+                    </div>
+                    <div class="w-full bg-white/5 rounded-full h-2.5 shadow-inner overflow-hidden">
+                        <div id="bar-trash" class="bg-gray-400 h-2.5 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Environmental Impact -->
+        <div class="bento-card p-8 bg-gradient-to-br from-[#111111] to-black border-white/5">
+            <h3 class="font-bold text-white text-lg tracking-tight mb-6">Environmental Savings</h3>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
+                    <i data-lucide="droplets" class="w-6 h-6 text-blue-400 mb-2"></i>
+                    <span class="text-xs font-medium text-[#86868B] uppercase tracking-widest mb-1">Water Saved</span>
+                    <span class="font-bold text-white text-xl"><span id="stat-water">0</span><span class="text-xs opacity-50 ml-1">L</span></span>
+                </div>
+                
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
+                    <i data-lucide="zap" class="w-6 h-6 text-yellow-400 mb-2 fill-yellow-400"></i>
+                    <span class="text-xs font-medium text-[#86868B] uppercase tracking-widest mb-1">Energy Saved</span>
+                    <span class="font-bold text-white text-xl"><span id="stat-energy">0</span><span class="text-xs opacity-50 ml-1">kWh</span></span>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center col-span-2">
+                    <i data-lucide="trees" class="w-6 h-6 text-[#34C759] mb-2"></i>
+                    <span class="text-xs font-medium text-[#86868B] uppercase tracking-widest mb-1">CO2 Equivalence</span>
+                    <span class="font-bold text-white text-xl"><span id="stat-co2">0</span><span class="text-xs opacity-50 ml-1">kg</span></span>
+                    <p class="text-[10px] text-[#86868B] mt-1">Equivalent to planting <span id="stat-trees">0</span> trees</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { auth, onAuthStateChanged, signOut } from './firebase-config.js';
+
+    lucide.createIcons();
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        } else {
+            // Render avatar dynamically
+            const avatarContainer = document.getElementById("profile-trigger-btn");
+            let gamifyStr = localStorage.getItem("binbot_user");
+            let gamifyUser = gamifyStr ? JSON.parse(gamifyStr) : {};
+            const finalAvatar = gamifyUser.avatar || user.photoURL;
+            if(avatarContainer && finalAvatar && finalAvatar !== "null" && finalAvatar !== "undefined") {
+                avatarContainer.innerHTML = `<img src="${finalAvatar}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\\'user\\' class=\\'w-4 h-4 text-white\\'></i>'; if(window.lucide) window.lucide.createIcons();" />`;
+            }
+        }
+    });
+
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    };
+
+    // Calculate Analytics
+    function renderAnalytics(timeRange = 'week') {
+        const rawHistoryData = JSON.parse(localStorage.getItem("binbot_history")) || [];
+        
+        let now = new Date();
+        let startTime = new Date();
+        let bins = []; // Array of objects { label, r: 0, c: 0, t: 0, start: date, end: date }
+        
+        if (timeRange === 'week') {
+            document.querySelector("p.uppercase.tracking-widest").textContent = "RECYCLED, COMPOSTED, AND TRASH ITEMS / DAY";
+            startTime.setDate(now.getDate() - 6);
+            startTime.setHours(0,0,0,0);
+            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            for (let i = 0; i < 7; i++) {
+                let d = new Date(startTime);
+                d.setDate(d.getDate() + i);
+                bins.push({ label: dayNames[d.getDay()], r: 0, c: 0, t: 0, start: d.getTime(), end: d.getTime() + 86400000 });
+            }
+        } else if (timeRange === 'month') {
+            document.querySelector("p.uppercase.tracking-widest").textContent = "RECYCLED, COMPOSTED, AND TRASH ITEMS / WEEK";
+            startTime.setDate(now.getDate() - 27);
+            startTime.setHours(0,0,0,0);
+            for (let i = 0; i < 4; i++) {
+                let d = new Date(startTime);
+                d.setDate(d.getDate() + (i * 7));
+                bins.push({ label: `Wk ${i+1}`, r: 0, c: 0, t: 0, start: d.getTime(), end: d.getTime() + 7 * 86400000 });
+            }
+        } else if (timeRange === 'year') {
+            document.querySelector("p.uppercase.tracking-widest").textContent = "RECYCLED, COMPOSTED, AND TRASH ITEMS / MONTH";
+            startTime.setFullYear(now.getFullYear() - 1);
+            startTime.setMonth(now.getMonth() + 1, 1);
+            startTime.setHours(0,0,0,0);
+            const moNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            for (let i = 0; i < 12; i++) {
+                let d = new Date(startTime);
+                d.setMonth(d.getMonth() + i);
+                let endD = new Date(d);
+                endD.setMonth(endD.getMonth() + 1);
+                bins.push({ label: moNames[d.getMonth()], r: 0, c: 0, t: 0, start: d.getTime(), end: endD.getTime() });
+            }
+        }
+
+        let historyData = rawHistoryData.filter(e => {
+            let t = new Date(e.timestamp).getTime();
+            return t >= startTime.getTime() && t <= now.getTime();
+        });
+        
+        let stats = { recycled: 0, composted: 0, trash: 0, total: Math.max(1, historyData.length), water: 0, energy: 0, co2: 0 };
+
+        historyData.forEach(entry => {
+            const b = entry.bin.toLowerCase();
+            const ts = new Date(entry.timestamp).getTime();
+            
+            let targetBin = bins.find(bin => ts >= bin.start && ts < bin.end);
+            if (!targetBin) targetBin = bins[bins.length - 1]; 
+            
+            if (b.includes("recycle") || b.includes("blue") || b.includes("e-waste") || b.includes("black")) {
+                stats.recycled++;
+                stats.water += 10.5;
+                stats.energy += 0.8;
+                stats.co2 += 0.3;
+                if (targetBin) targetBin.r++;
+            } else if (b.includes("compost") || b.includes("green")) {
+                stats.composted++;
+                stats.co2 += 0.5;
+                if (targetBin) targetBin.c++;
+            } else {
+                stats.trash++;
+                if (targetBin) targetBin.t++;
+            }
+        });
+
+        // Update Pie breakdown
+        const recPct = Math.round((stats.recycled / stats.total) * 100) || 0;
+        const compPct = Math.round((stats.composted / stats.total) * 100) || 0;
+        const trashPct = Math.round((stats.trash / stats.total) * 100) || 0;
+
+        document.getElementById("pct-recycle").textContent = `${recPct}%`;
+        document.getElementById("bar-recycle").style.width = `${recPct}%`;
+
+        document.getElementById("pct-compost").textContent = `${compPct}%`;
+        document.getElementById("bar-compost").style.width = `${compPct}%`;
+
+        document.getElementById("pct-trash").textContent = `${trashPct}%`;
+        document.getElementById("bar-trash").style.width = `${trashPct}%`;
+
+        // Update Savings Blocks
+        document.getElementById("stat-water").textContent = stats.water.toFixed(1);
+        document.getElementById("stat-energy").textContent = stats.energy.toFixed(1);
+        document.getElementById("stat-co2").textContent = "-" + stats.co2.toFixed(1);
+        document.getElementById("stat-trees").textContent = Math.floor(stats.co2 / 10);
+
+        // Update Chart
+        let maxVal = 10;
+        bins.forEach(b => {
+            let tot = b.r + b.c + b.t;
+            if (tot > maxVal) maxVal = tot;
+        });
+
+        const chartContainer = document.getElementById("diversion-chart");
+        chartContainer.innerHTML = "";
+        
+        bins.forEach(b => {
+             const total = b.r + b.c + b.t;
+             let rHeight = total > 0 ? (b.r / maxVal) * 100 : 0;
+             let cHeight = total > 0 ? (b.c / maxVal) * 100 : 0;
+             let tHeight = total > 0 ? (b.t / maxVal) * 100 : 0;
+             
+             if (rHeight + cHeight + tHeight > 95) {
+                 const scale = 95 / (rHeight + cHeight + tHeight);
+                 rHeight *= scale; cHeight *= scale; tHeight *= scale;
+             }
+
+             const el = document.createElement("div");
+             el.className = "chart-bar-bg group cursor-pointer";
+             el.innerHTML = `
+                 <div class="chart-bar-fill w-1/2 relative group/r flex items-center justify-center transition-all hover:brightness-110" style="height: ${rHeight}%">
+                     ${b.r > 0 ? `<div class="chart-tooltip">${b.r}</div>` : ''}
+                 </div>
+                 <div class="chart-bar-fill-2 w-1/2 relative group/c flex items-center justify-center transition-all hover:brightness-110" style="height: ${cHeight}%">
+                     ${b.c > 0 ? `<div class="chart-tooltip">${b.c}</div>` : ''}
+                 </div>
+                 <div class="chart-bar-fill-3 w-1/2 relative group/t flex items-center justify-center transition-all hover:brightness-110" style="height: ${tHeight}%">
+                     ${b.t > 0 ? `<div class="chart-tooltip">${b.t}</div>` : ''}
+                 </div>
+                 <span class="chart-label pointer-events-none">${b.label}</span>
+                 <span class="chart-value opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">${total > 0 ? total : ''}</span>
+             `;
+             chartContainer.appendChild(el);
+        });
+    }
+
+    renderAnalytics('week');
+
+    // Bind Tab Click Handlers
+    document.getElementById("btn-filter-week").addEventListener("click", (e) => setTimeFilter('week', e.target));
+    document.getElementById("btn-filter-month").addEventListener("click", (e) => setTimeFilter('month', e.target));
+    document.getElementById("btn-filter-year").addEventListener("click", (e) => setTimeFilter('year', e.target));
+    
+    function setTimeFilter(range, btn) {
+        document.querySelectorAll("#time-filters button").forEach(b => {
+             b.className = "px-4 py-2 border border-transparent rounded-lg text-xs font-bold text-[#86868B] hover:text-white transition-colors";
+        });
+        btn.className = "px-4 py-2 border border-white/10 bg-white/5 rounded-lg text-xs font-bold text-white transition-colors";
+        renderAnalytics(range);
+    }
+  </script>
+
+    
+    <script>
+        // Premium 3D Tilt Effect
+        document.querySelectorAll('.bento-card, .glass-panel').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -4;
+                const rotateY = ((x - centerX) / centerX) * 4;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transition = 'transform 0.1s ease';
+                card.style.zIndex = '50';
+                
+                // Add metallic shine
+                card.style.background = `radial-gradient(circle at ${x}px ${y}px, var(--tilt-shine-color) 0%, var(--tilt-base-color) 60%)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                card.style.transition = 'transform 0.5s ease-out';
+                card.style.zIndex = '1';
+                card.style.background = card.classList.contains('glass-panel') ? 'var(--glass-bg)' : 'var(--card-bg)';
+            });
+        });
+    </script>
+</body>
+
+</html>
