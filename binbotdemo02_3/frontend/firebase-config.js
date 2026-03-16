@@ -2,7 +2,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Your web app's Firebase configuration
+// firebase project configuration - copy-pasted from Firebase console
+// (Project Settings -> General -> Your apps -> SDK setup and configuration)
 const firebaseConfig = {
   apiKey: "AIzaSyCCl8jbZTOljw2IRgoWl2f5LA5jn47A4V8",
   authDomain: "binbot-0.firebaseapp.com",

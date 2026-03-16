@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Map - BinBot</title>
+  
+
   <script src="https://cdn.tailwindcss.com"></script>
+  
+
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="style.css?v=20260307">
   <link rel="icon" href="favicon.png">
@@ -17,81 +21,142 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
 
   <!-- Leaflet JS -->
+  
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <!-- Leaflet Control Geocoder JS -->
+  
+
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   <!-- Leaflet Locate Control JS -->
+  
+
   <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
+  
   
   <style>
     #map {
-      height: 600px;
       width: 100%;
-      border-radius: 1.5rem;
+      height: min(68vh, 620px);
+      min-height: 360px;
+      border-radius: 1.4rem;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      #map {
+        height: 50vh;
+        min-height: 300px;
+      }
+    }
+
+    .pf-footer {
+      border-top: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--surface-0) 92%, #000 8%);
+      backdrop-filter: blur(8px);
+      position: relative;
       z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
     }
-    .leaflet-popup-content-wrapper {
-      background-color: #111111;
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 1rem;
+    .pf-footer-wrap {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2.25rem 1rem 1.25rem;
     }
-    .leaflet-popup-tip {
-      background-color: #111111;
+    .pf-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
     }
-    .custom-marker {
-      display: flex;
-      justify-content: center;
+    .pf-brand-link {
+      display: inline-flex;
       align-items: center;
-      background-color: #34C759;
-      color: white;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      border: 2px solid white;
-      box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
-      font-size: 14px;
-      transition: transform 0.2s;
+      gap: 0.55rem;
+      text-decoration: none;
     }
-    .custom-marker:hover {
-      transform: scale(1.1);
+    .pf-logo {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--icon-accent-border);
+      color: var(--icon-accent);
+      background: color-mix(in srgb, var(--icon-accent-soft) 56%, transparent 44%);
     }
-    /* Customize Geocoder control for dark theme */
-    .leaflet-control-geocoder {
-        background-color: #1a1a1a !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
-        border-radius: 8px !important;
-        color: white !important;
+    .pf-name {
+      color: var(--text-color);
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
     }
-    .leaflet-control-geocoder-icon {
-        background-color: transparent !important;
-        filter: invert(1);
+    .pf-copy {
+      margin: 0.75rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 32ch;
+      font-size: 0.95rem;
+      font-weight: 600;
     }
-    .leaflet-control-geocoder-form input {
-        background-color: #1a1a1a !important;
-        color: white !important;
+    .pf-nav-title {
+      color: var(--text-color);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+      display: block;
     }
-    .leaflet-control-geocoder-alternatives {
-        background-color: #1a1a1a !important;
-        color: white !important;
+    .pf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
     }
-    .leaflet-control-geocoder-alternatives li:hover {
-        background-color: #333 !important;
+    .pf-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.42rem 0.74rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent 12%);
+      transition: all 0.2s ease;
     }
-    
-    /* Locate control */
-    .leaflet-bar a {
-        background-color: #1a1a1a !important;
-        color: #86868B !important;
-        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    .pf-links a:hover {
+      color: var(--text-color);
+      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface-hover) 55%, transparent 45%);
     }
-    .leaflet-bar a:hover {
-        color: white !important;
-        background-color: #2a2a2a !important;
+    .pf-bottom {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent 22%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pf-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .pf-copy {
+        max-width: 100%;
+      }
+    }
+
+    :root[data-theme="light"] .pf-footer {
+      background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
     }
   </style>
 </head>
-<body class="selection:bg-emerald-500/30 selection:text-white pb-20">
+<body class="selection:bg-emerald-500/30 selection:text-white">
 
   <!-- Floating Navigation -->
   <nav class="fixed top-0 w-full z-50 nav-glass">
@@ -189,6 +254,7 @@
     </div>
 
   </main>
+  
 
   <script type="module">
     import { auth, onAuthStateChanged, signOut } from './firebase-config.js';
@@ -230,17 +296,50 @@
 
     // Map Global Variables
     let map;
+    let baseTileLayer;
     let markersLayer = L.layerGroup();
     let currentFilter = "all";
+    let currentMapTheme = null;
+
+    function getThemeMode() {
+        const attrTheme = document.documentElement.getAttribute('data-theme');
+        if (attrTheme === 'light' || attrTheme === 'dark') return attrTheme;
+        const saved = localStorage.getItem('binbot_theme_mode');
+        if (saved === 'light' || saved === 'dark') return saved;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function setMapTheme(theme) {
+        if (!map) return;
+
+        if (baseTileLayer) {
+            map.removeLayer(baseTileLayer);
+        }
+
+        const isLight = theme === 'light';
+        const tileUrl = isLight
+            ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        const attribution = isLight
+            ? '&copy; OpenStreetMap contributors'
+            : '&copy; OpenStreetMap contributors &copy; CARTO';
+
+        baseTileLayer = L.tileLayer(tileUrl, {
+            attribution,
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+    }
     
     // Sample Recycling Stores extended (fallback for NY)
     const allStores = [
-        { name: "EcoCenter Drop-off", lat: 40.7228, lng: -74.0080, type: "General Recycling", category: "all", address: "123 Green Ave.", icon: "♻️", color: "#34C759" },
-        { name: "City Scrap & Metal", lat: 40.7100, lng: -74.0150, type: "E-Waste & Metal", category: "E-Waste", address: "45 Industrial Pkwy.", icon: "💻", color: "#14B8A6" },
-        { name: "Green Earth Paper", lat: 40.7300, lng: -73.9900, type: "Paper & Cardboard", category: "Paper", address: "89 Paper St.", icon: "📄", color: "#EAB308" },
-        { name: "Community Compost Hub", lat: 40.7050, lng: -73.9990, type: "Compost", category: "Compost", address: "Community Garden 4", icon: "🌱", color: "#34C759" },
-        { name: "TechRescue E-Waste", lat: 40.7400, lng: -73.9800, type: "E-Waste", category: "E-Waste", address: "Tech Hub Route 1", icon: "📱", color: "#14B8A6" },
-        { name: "Uptown Paper Recycling", lat: 40.7500, lng: -73.9700, type: "Paper", category: "Paper", address: "Central Ave. Box 12", icon: "📦", color: "#EAB308" }
+        { name: "EcoCenter Drop-off", lat: 40.7228, lng: -74.0080, type: "General Recycling", category: "all", address: "123 Green Ave.", icon: "R", color: "#34C759" },
+        { name: "City Scrap & Metal", lat: 40.7100, lng: -74.0150, type: "E-Waste & Metal", category: "E-Waste", address: "45 Industrial Pkwy.", icon: "E", color: "#14B8A6" },
+        { name: "Green Earth Paper", lat: 40.7300, lng: -73.9900, type: "Paper & Cardboard", category: "Paper", address: "89 Paper St.", icon: "P", color: "#EAB308" },
+        { name: "Community Compost Hub", lat: 40.7050, lng: -73.9990, type: "Compost", category: "Compost", address: "Community Garden 4", icon: "C", color: "#34C759" },
+        { name: "TechRescue E-Waste", lat: 40.7400, lng: -73.9800, type: "E-Waste", category: "E-Waste", address: "Tech Hub Route 1", icon: "E", color: "#14B8A6" },
+        { name: "Uptown Paper Recycling", lat: 40.7500, lng: -73.9700, type: "Paper", category: "Paper", address: "Central Ave. Box 12", icon: "P", color: "#EAB308" }
     ];
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -256,12 +355,19 @@
         // Add Zoom Control to Bottom Right
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        // Fast CDNs for tiles
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            subdomains: 'abcd',
-            maxZoom: 20
-        }).addTo(map);
+        currentMapTheme = getThemeMode();
+        setMapTheme(currentMapTheme);
+
+        const themeObserver = new MutationObserver(() => {
+            const nextTheme = getThemeMode();
+            if (nextTheme === currentMapTheme) return;
+            currentMapTheme = nextTheme;
+            setMapTheme(currentMapTheme);
+        });
+        themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme']
+        });
 
         // Add Search (Geocoder) Control
         let searchMarker;
@@ -277,7 +383,7 @@
                 map.removeLayer(searchMarker);
             }
             const searchIcon = L.divIcon({
-                html: `<div class="custom-marker" style="background-color: #000; border: 2px solid #EAB308; color: #EAB308;">🔍</div>`,
+                html: `<div class="custom-marker" style="background-color: #000; border: 2px solid #EAB308; color: #EAB308;">S</div>`,
                 className: '',
                 iconSize: [32, 32],
                 iconAnchor: [16, 16]
@@ -314,7 +420,7 @@
                 
                 // Add user marker
                 const userIcon = L.divIcon({
-                    html: `<div class="custom-marker" style="background-color: #000; border: 2px solid #10B981; color: #10B981;">📍</div>`,
+                    html: `<div class="custom-marker" style="background-color: #000; border: 2px solid #10B981; color: #10B981;">U</div>`,
                     className: '',
                     iconSize: [32, 32],
                     iconAnchor: [16, 16]
@@ -375,30 +481,30 @@
                         const tags = element.tags || {};
                         const type = tags["recycling_type"] || tags["amenity"] || "General Recycling";
                         let category = "Recycling";
-                        let icon = "🚮";
+                        let icon = "R";
                         let color = "#3B82F6"; // Blue for generic recycling/waste
 
                         if (tags["amenity"] === "waste_basket") {
-                            icon = "🗑️";
+                            icon = "D";
                             category = "Recycling";
                         }
                         
                         // Map real OSM tags to our UI categories
                         if (tags["recycling:batteries"] || tags["recycling:electrical_appliances"] || tags["recycling:scrap_metal"]) {
                             category = "E-Waste";
-                            icon = "💻";
+                            icon = "E";
                             color = "#14B8A6";
                         } else if (tags["recycling:cardboard"] || tags["recycling:paper"] || tags["recycling:magazines"]) {
                             category = "Paper";
-                            icon = "📄";
+                            icon = "P";
                             color = "#EAB308";
                         } else if (tags["recycling:green_waste"] || tags["recycling:organic"]) {
                             category = "Compost";
-                            icon = "🌱";
+                            icon = "C";
                             color = "#34C759";
                         } else if (tags["amenity"] === "recycling" || tags["recycling_type"]) {
                             category = "Recycling";
-                            icon = "♻️";
+                            icon = "R";
                             color = "#3B82F6";
                         }
                         
@@ -497,9 +603,39 @@
           justify-content: center;
       }
       .leaflet-control-locate a::before {
-          content: '📍';
+          content: 'LOC';
           font-size: 16px;
       }
   </style>
+  
+
+  
+  <footer class="pf-footer">
+    <div class="pf-footer-wrap">
+      <div class="pf-footer-grid">
+        <div>
+          <a href="index.html" class="pf-brand-link">
+            <span class="pf-logo" aria-hidden="true">
+              <i data-lucide="leaf" class="w-4 h-4"></i>
+            </span>
+            <span class="pf-name">BinBot</span>
+          </a>
+          <p class="pf-copy">Sort smarter, recycle faster, and build daily habits for a cleaner planet.</p>
+        </div><br><br>
+
+        <nav aria-label="Legal links">
+          <span class="pf-nav-title">Legal</span>
+          <div class="pf-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="pf-bottom">&copy; 2026 BinBot. Built for a greener planet.</div>
+    </div>
+  </footer>
+<script src="js/ui-effects.js" defer></script>
 </body>
 </html>
+

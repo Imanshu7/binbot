@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css?v=20260307">
     <link rel="icon" href="favicon.png">
 </head>
-<body class="min-h-screen flex items-center justify-center relative overflow-x-hidden selection:bg-white/20 selection:text-white py-12 px-4">
+<body class="min-h-screen flex flex-col relative overflow-x-hidden selection:bg-white/20 selection:text-white">
 
     <!-- Back to Home -->
     <a href="index.html" class="absolute top-8 left-8 z-50 flex items-center gap-2 text-[#86868B] hover:text-white transition-colors text-sm font-semibold group">
@@ -20,6 +20,7 @@
     <div class="bg-shape w-[600px] h-[600px] bg-teal-600 top-[-10%] left-[-10%]"></div>
     <div class="bg-shape w-[500px] h-[500px] bg-emerald-600 bottom-[-10%] right-[-10%]" style="animation-duration: 15s; animation-delay: -5s;"></div>
 
+    <main class="flex-1 w-full flex items-center justify-center py-12 px-4">
     <div class="w-full max-w-md relative z-10">
         
         <div class="flex justify-center mb-8">
@@ -48,7 +49,7 @@
                             <label for="password" class="sr-only">Password</label>
                             <a href="#" class="text-[#86868B] hover:text-white text-xs font-medium transition-colors ml-auto pb-1 block">Forgot password?</a>
                         </div>
-                        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••"
+                        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="********"
                             class="w-full bg-[#000000]/40 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium placeholder-[#86868B] tracking-widest">
                     </div>
                 </div>
@@ -81,6 +82,8 @@
             </div>
         </div>
     </div>
+    </main>
+
 
     <script type="module">
         import { auth, googleProvider, signInWithEmailAndPassword, signInWithPopup, db, doc, setDoc, getDoc, serverTimestamp } from './firebase-config.js';
@@ -218,36 +221,8 @@
     </script>
 
     
-    <script>
-        // Premium 3D Tilt Effect
-        document.querySelectorAll('.bento-card, .glass-panel').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -4;
-                const rotateY = ((x - centerX) / centerX) * 4;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                card.style.transition = 'transform 0.1s ease';
-                card.style.zIndex = '50';
-                
-                // Add metallic shine
-                card.style.background = `radial-gradient(circle at ${x}px ${y}px, var(--tilt-shine-color) 0%, var(--tilt-base-color) 60%)`;
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-                card.style.transition = 'transform 0.5s ease-out';
-                card.style.zIndex = '1';
-                card.style.background = card.classList.contains('glass-panel') ? 'var(--glass-bg)' : 'var(--card-bg)';
-            });
-        });
-    </script>
+  <script src="js/ui-effects.js" defer></script>
 </body>
 
 </html>
+
