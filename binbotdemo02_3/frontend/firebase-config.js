@@ -10,8 +10,8 @@ const firebaseConfig = {
   projectId: "binbot-0",
   storageBucket: "binbot-0.firebasestorage.app",
   messagingSenderId: "483195794662",
-  appId: "1:483195794662:web:4462980eee948e11127727",
-  measurementId: "G-KRL23C0EV8"
+  appId: "1:483195794662:web:4096ccb29fa1e800127727",
+  measurementId: "G-P9KWE8HEFK"
 };
 
 // Initialize Firebase
