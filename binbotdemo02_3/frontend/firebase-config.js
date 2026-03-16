@@ -5,7 +5,7 @@ import { getFirestore, collection, addDoc, doc, setDoc, getDoc, serverTimestamp 
 // firebase project configuration - copy-pasted from Firebase console
 // (Project Settings -> General -> Your apps -> SDK setup and configuration)
 const firebaseConfig = {
-  apiKey: process.env.MY_API_KEY,
+  apiKey: AIzaSyCCl8jbZTOljw2IRgoWl2f5LA5jn47A4V8,
   authDomain: "binbot-0.firebaseapp.com",
   projectId: "binbot-0",
   storageBucket: "binbot-0.firebasestorage.app",
