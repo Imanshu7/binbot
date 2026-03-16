@@ -192,15 +192,27 @@
 
   const isMobile = () => window.innerWidth < 640;
 
+  const lockBodyScroll = () => {
+    if (!isMobile()) return;
+    savedScrollY = window.scrollY;
+    document.body.classList.add('ai-chat-open');
+    document.body.style.top = `-${savedScrollY}px`;
+  };
+
+  const unlockBodyScroll = () => {
+    const top = document.body.style.top;
+    document.body.classList.remove('ai-chat-open');
+    document.body.style.top = '';
+    if (top) {
+      const restored = Number.parseInt(top || '0', 10) * -1;
+      window.scrollTo(0, Number.isFinite(restored) ? restored : savedScrollY);
+    }
+  };
+
   const toggleChat = () => {
     isOpen = !isOpen;
     if (isOpen) {
-      // Save scroll position on mobile before locking body
-      if (isMobile()) {
-        savedScrollY = window.scrollY;
-        document.body.classList.add('ai-chat-open');
-        document.body.style.top = `-${savedScrollY}px`;
-      }
+      lockBodyScroll();
       
       chatWindow.classList.remove('hidden');
       setTimeout(() => {
@@ -223,12 +235,7 @@
       chatWindow.classList.remove('scale-100', 'opacity-100');
       chatWindow.classList.add('scale-95', 'opacity-0');
       
-      // Restore body scroll on mobile
-      if (isMobile()) {
-        document.body.classList.remove('ai-chat-open');
-        document.body.style.top = '';
-        window.scrollTo(0, savedScrollY);
-      }
+      unlockBodyScroll();
       
       setTimeout(() => {
         chatWindow.classList.add('hidden');
@@ -252,14 +259,28 @@
       if (isOpen && isMobile()) {
         const vh = window.visualViewport.height;
         chatWindow.style.height = `${vh}px`;
+      } else {
+        chatWindow.style.height = '';
       }
     });
     window.visualViewport.addEventListener('scroll', () => {
       if (isOpen && isMobile()) {
         chatWindow.style.top = `${window.visualViewport.offsetTop}px`;
+      } else {
+        chatWindow.style.top = '';
       }
     });
   }
+
+  window.addEventListener('resize', () => {
+    if (!isMobile()) {
+      unlockBodyScroll();
+      chatWindow.style.height = '';
+      chatWindow.style.top = '';
+    }
+  }, { passive: true });
+
+  window.addEventListener('pagehide', unlockBodyScroll, { passive: true });
 
   // Convert markdown to simple HTML including code blocks and newlines
   const formatText = (text) => {

@@ -237,8 +237,6 @@ waste_database = {
 
     #dry waste(blue bin)
     "plastic bottle": {"category": "dry waste"},
-    "carton": {"category": "dry waste"},
-    "notebook": {"category": "dry waste"},
     "aluminum can": {"category": "dry waste"},
     "paper cup": {"category": "dry waste"},
     "cardboard box": {"category": "dry waste"},
@@ -423,8 +421,6 @@ waste_database = {
     "lanyard ribbon": {"category": "dry waste"}, 
     "bottle": {"category": "dry waste"},
     "water bottle": {"category": "dry waste"},
-    "paper": {"category": "dry waste"},
-    "paper bag": {"category": "dry waste"},
 
     #hazardous waste(yellow bin)
     "battery": {"category": "hazardous waste"},
@@ -609,7 +605,6 @@ waste_database = {
     "e waste": {"category": "e waste"},
     "rechargeable nicd battery pack": {"category": "e waste"},
     "rechargeable lithium battery pack": {"category": "e waste"},
-    "mobile phone": {"category": "e waste"},
     "mobile phone battery": {"category": "e waste"},
     "laptop battery": {"category": "e waste"},
     "tablet battery": {"category": "e waste"},
@@ -975,4 +970,3 @@ def get_waste_info(item_name: str):
     if name_clean in waste_database:
         return waste_database[name_clean]
     return None
-
