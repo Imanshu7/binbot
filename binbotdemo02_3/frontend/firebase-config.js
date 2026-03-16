@@ -1,21 +1,22 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
+import { getAnalytics } from "firebase/analytics";
 // firebase project configuration - copy-pasted from Firebase console
 // (Project Settings -> General -> Your apps -> SDK setup and configuration)
 const firebaseConfig = {
-  apiKey: AIzaSyCCl8jbZTOljw2IRgoWl2f5LA5jn47A4V8,
+  apiKey: "AIzaSyCCl8jbZTOljw2IRgoWl2f5LA5jn47A4V8",
   authDomain: "binbot-0.firebaseapp.com",
   projectId: "binbot-0",
   storageBucket: "binbot-0.firebasestorage.app",
   messagingSenderId: "483195794662",
-  appId: "1:483195794662:web:4096ccb29fa1e800127727",
-  measurementId: "G-P9KWE8HEFK"
+  appId: "1:483195794662:web:912a2df47b5c5a5c127727",
+  measurementId: "G-MY0Z5CPPTM"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
