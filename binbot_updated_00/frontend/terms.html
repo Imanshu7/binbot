@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - BinBot</title>
+  
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png">
+  
+  <style>
+    .pf-footer {
+      border-top: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--surface-0) 92%, #000 8%);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
+    }
+    .pf-footer-wrap {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2.25rem 1rem 1.25rem;
+    }
+    .pf-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pf-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+    }
+    .pf-logo {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--icon-accent-border);
+      color: var(--icon-accent);
+      background: color-mix(in srgb, var(--icon-accent-soft) 56%, transparent 44%);
+    }
+    .pf-name {
+      color: var(--text-color);
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .pf-copy {
+      margin: 0.75rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 32ch;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .pf-nav-title {
+      color: var(--text-color);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+      display: block;
+    }
+    .pf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+    .pf-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.42rem 0.74rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent 12%);
+      transition: all 0.2s ease;
+    }
+    .pf-links a:hover {
+      color: var(--text-color);
+      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface-hover) 55%, transparent 45%);
+    }
+    .pf-bottom {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent 22%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pf-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .pf-copy {
+        max-width: 100%;
+      }
+    }
+  
+    :root[data-theme="light"] .pf-footer {
+      background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#34C759] selection:text-white overflow-x-hidden">
+
+  <!-- Desktop Navigation (Simplified) -->
+  <nav class="fixed top-0 w-full z-50 bg-[#000000]/70 backdrop-blur-xl border-b border-white/10 hidden md:block">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2 group shrink-0 sm:pr-2">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+            <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+        </div>
+        <span class="font-bold text-sm tracking-tight text-white">BinBot</span>
+      </a>
+      <a href="index.html" class="text-xs font-semibold text-[#86868B] hover:text-white transition-colors">Back to Home</a>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav (Simplified) -->
+  <nav class="fixed top-0 w-full z-50 bg-[#000000]/70 backdrop-blur-xl border-b border-white/10 md:hidden flex justify-between items-center px-4 h-16">
+    <a href="index.html" class="flex items-center gap-2 group shrink-0 sm:pr-2">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+            <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+        </div>
+        <span class="font-bold text-sm tracking-tight text-white">BinBot</span>
+    </a>
+    <a href="index.html" class="text-xs font-semibold text-[#86868B] border border-white/10 px-3 py-1.5 rounded-full">Home</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow pt-28 pb-20 px-6 sm:px-8 max-w-4xl mx-auto w-full relative z-10">
+      
+      <div class="mb-12">
+          <h1 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-4">Terms & Conditions</h1>
+          <p class="text-[#86868B] text-lg font-medium">Agreement for utilizing the BinBot platform.</p>
+      </div>
+
+      <div class="glass-panel p-8 md:p-12 space-y-8 text-[#a1a1aa] leading-relaxed">
+          
+          <section>
+              <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                  <i data-lucide="file-signature" class="text-[#34C759] w-6 h-6"></i> 1. Acceptance of Terms
+              </h2>
+              <p>By accessing and using BinBot, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services.</p>
+          </section>
+
+          <hr class="border-white/10">
+
+          <section>
+              <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                  <i data-lucide="scale" class="text-[#34C759] w-6 h-6"></i> 2. Service Description
+              </h2>
+              <p>BinBot provides an AI-powered waste classification service intended to assist users in identifying correct disposal methods. <strong class="text-white">BinBot does not guarantee 100% accuracy</strong>. Users must adhere to their local municipality guidelines in the event of a discrepancy. BinBot is not liable for administrative fines or ecological issues caused by incorrect disposal choices.</p>
+          </section>
+
+          <hr class="border-white/10">
+
+          <section>
+              <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                  <i data-lucide="user-x" class="text-[#34C759] w-6 h-6"></i> 3. User Accounts
+              </h2>
+              <p>If you create an account on the platform, you are responsible for maintaining the security of your account, and you are fully responsible for all activities that occur under the account and any other actions taken in connection with it.</p>
+          </section>
+
+          <hr class="border-white/10">
+          
+          <section>
+              <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                  <i data-lucide="cpu" class="text-[#34C759] w-6 h-6"></i> 4. API Usage Returns
+              </h2>
+              <p>Users who provide their own Gemini API keys for the "Wasti AI" assistant feature must follow Google's Terms of Service regarding API abuse. BinBot processes these keys strictly locally and does not transmit them to our servers.</p>
+          </section>
+
+      </div>
+  </main>
+  <!-- Footer -->
+  
+
+  <script>
+      lucide.createIcons();
+  </script>
+  
+
+  
+  <footer class="pf-footer">
+    <div class="pf-footer-wrap">
+      <div class="pf-footer-grid">
+        <div>
+          <a href="index.html" class="pf-brand-link">
+            <span class="pf-logo" aria-hidden="true">
+              <i data-lucide="leaf" class="w-4 h-4"></i>
+            </span>
+            <span class="pf-name">BinBot</span>
+          </a>
+          <p class="pf-copy">Sort smarter, recycle faster, and build daily habits for a cleaner planet.</p>
+        </div>
+
+        <nav aria-label="Quick links">
+          <span class="pf-nav-title">Quick Links</span>
+          <div class="pf-links">
+            <a href="classify.html">Classify</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="history.html">History</a>
+            <a href="map.html">Map</a>
+          </div>
+        </nav>
+
+        <nav aria-label="Legal links">
+          <span class="pf-nav-title">Legal</span>
+          <div class="pf-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="pf-bottom">&copy; 2026 BinBot. Built for a greener planet.</div>
+    </div>
+  </footer>
+<script src="js/ui-effects.js" defer></script>
+</body>
+</html>
+

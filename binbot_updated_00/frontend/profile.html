@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - BinBot</title>
+  
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="favicon.png">
+  
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css?v=20260307">
+  
+
+  <script src="js/toast.js"></script>
+  
+  <style>
+    .pf-footer {
+      border-top: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--surface-0) 92%, #000 8%);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
+    }
+    .pf-footer-wrap {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2.25rem 1rem 1.25rem;
+    }
+    .pf-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pf-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+    }
+    .pf-logo {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--icon-accent-border);
+      color: var(--icon-accent);
+      background: color-mix(in srgb, var(--icon-accent-soft) 56%, transparent 44%);
+    }
+    .pf-name {
+      color: var(--text-color);
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .pf-copy {
+      margin: 0.75rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 32ch;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .pf-nav-title {
+      color: var(--text-color);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+      display: block;
+    }
+    .pf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+    .pf-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.42rem 0.74rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent 12%);
+      transition: all 0.2s ease;
+    }
+    .pf-links a:hover {
+      color: var(--text-color);
+      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface-hover) 55%, transparent 45%);
+    }
+    .pf-bottom {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent 22%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pf-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .pf-copy {
+        max-width: 100%;
+      }
+    }
+  
+    :root[data-theme="light"] .pf-footer {
+      background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
+    }
+  </style>
+</head>
+<body class="selection:bg-white/20 selection:text-white">
+
+  <!-- Floating Navigation -->
+  <nav class="fixed top-0 w-full z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex-shrink-0">
+          <a href="dashboard.html" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <span class="font-bold tracking-tight text-white">BinBot</span>
+          </a>
+        </div>
+
+        <div class="hidden md:block">
+          <div class="flex items-baseline space-x-1">
+            <a href="index.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">Home</a>
+            <a href="dashboard.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">Dashboard</a>
+            <a href="classify.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">Classify</a>
+            <a href="history.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">History</a>
+            <a href="analytics.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">Analytics</a>
+            <a href="map.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">Map</a>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+            <a href="profile.html" id="profile-trigger-btn" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 transition-all flex items-center justify-center overflow-hidden border-2 border-white/40 shrink-0">
+                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+            </a>
+        </div>
+        
+        <div class="-mr-2 flex md:hidden">
+          <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-full text-[#86868B] hover:text-white hover:bg-white/10 focus:outline-none transition-all">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#111111] border-b border-white/10">
+      <div class="px-4 pt-2 pb-4 space-y-1">
+        <a href="index.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Home</a>
+        <a href="dashboard.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Dashboard</a>
+        <a href="classify.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Classify</a>
+        <a href="history.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">History</a>
+        <a href="analytics.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Analytics</a>
+        <a href="map.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Map</a>
+        <a href="profile.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-white bg-white/10">Profile</a>
+        <button onclick="handleLogout()" class="w-full text-left px-4 py-3 rounded-2xl text-base font-medium text-red-400 hover:bg-white/5 mt-2">Sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-glow bg-green-500 top-0 left-[-10%] hidden md:block opacity-30"></div>
+
+  <!-- Main Content -->
+  <main class="relative z-10 pt-28 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+      
+    <!-- Header -->
+    <div class="mb-10 text-center flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-left w-full">
+            <h1 class="text-4xl font-black tracking-tight text-white mb-2">BinBot <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">Profile</span></h1>
+            <p class="text-[#86868B] font-medium text-sm">Manage your green identity and community impact settings.</p>
+        </div>
+        <button onclick="handleLogout()" class="px-6 py-2 bg-red-500/10 text-red-400 font-bold rounded-full text-xs hover:bg-red-500/20 border border-red-500/30 transition-all shadow-[0_4px_20px_rgba(255,0,0,0.1)] shrink-0 flex items-center gap-2">
+            <i data-lucide="log-out" class="w-4 h-4"></i> Sign Out
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Left Column: Avatar & Rank -->
+        <div class="md:col-span-1 space-y-6">
+            <div class="bento-card p-8 flex flex-col items-center text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent opacity-50 pointer-events-none z-0"></div>
+                
+                <h3 class="text-xs font-bold text-[#86868B] uppercase tracking-widest mb-6 relative z-10 w-full text-left">Display Picture</h3>
+                
+                <div class="relative z-10 w-32 h-32 mb-6 group cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
+                    <div id="avatar-container" class="w-full h-full rounded-full bg-white/5 border border-white/20 flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.2)]">
+                        <i data-lucide="user" class="w-12 h-12 text-[#86868B] mb-2" id="default-avatar-icon"></i>
+                    </div>
+                    <!-- Hover overlay for uploading avatar -->
+                    <div class="absolute inset-0 rounded-full bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm border border-white/30">
+                        <i data-lucide="camera" class="w-6 h-6 text-white mb-1"></i>
+                        <span class="text-xs font-bold text-white">Change</span>
+                    </div>
+                    <input type="file" id="avatar-upload" accept="image/jpeg, image/png, image/webp" class="hidden">
+                </div>
+                
+                <h2 id="display-name" class="text-2xl font-black text-white relative z-10 capitalize">BinWarrior</h2>
+                <div class="inline-flex items-center gap-2 mt-3 px-3 py-1 rounded-full bg-[#EAB308]/20 border border-[#EAB308]/40 relative z-10">
+                    <i data-lucide="shield" class="w-4 h-4 text-[#EAB308]"></i>
+                    <span class="text-xs font-bold text-[#EAB308]">Rank <span id="display-level" class="text-white">1</span></span>
+                </div>
+            </div>
+
+            <!-- Stats Mini Card -->
+            <div class="bento-card p-6 border border-white/5 bg-[#111111]/80 shadow-none flex justify-between items-center text-center">
+                 <div>
+                     <p class="text-[10px] font-bold text-[#86868B] uppercase tracking-widest mb-1">Total XP</p>
+                     <p id="total-xp-txt" class="text-xl font-black text-white">0</p>
+                 </div>
+                 <div class="w-px h-10 bg-white/10"></div>
+                 <div>
+                     <p class="text-[10px] font-bold text-[#86868B] uppercase tracking-widest mb-1">Scans</p>
+                     <p id="total-scans-txt" class="text-xl font-black text-white">0</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Edit Details -->
+        <div class="md:col-span-2 space-y-6">
+            <div class="bento-card p-8">
+                <h3 class="text-lg font-bold text-white mb-6 border-b border-white/10 pb-4">Account Settings</h3>
+                
+                <form id="profile-form" class="space-y-6">
+                    <div>
+                        <label for="username" class="block text-xs font-bold text-[#86868B] uppercase tracking-widest mb-2">Display Name</label>
+                        <input id="username" type="text" autocomplete="off"
+                            class="w-full bg-[#000000]/40 border border-white/10 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all text-sm font-bold">
+                    </div>
+                    
+                    <div class="pt-4 flex items-center gap-4 border-t border-white/10">
+                        <button type="submit" id="save-btn" class="px-6 py-3 bg-white text-black font-bold rounded-xl text-sm hover:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(255,255,255,0.1)] focus:outline-none flex items-center gap-2">
+                           <i data-lucide="save" class="w-4 h-4"></i> Save Changes
+                        </button>
+                        <span id="save-status" class="text-sm font-bold text-[#34C759] opacity-0 transition-opacity flex items-center gap-1">
+                            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Saved!
+                        </span>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="bento-card p-6 bg-red-500/5 border border-red-500/20 shadow-none">
+                 <h3 class="text-sm font-bold text-red-400 mb-2">Danger Zone</h3>
+                 <p class="text-xs text-[#86868B] mb-4">Resetting your account will delete all accumulated XP and progress.</p>
+                 <button onclick="resetAccount()" class="px-4 py-2 bg-red-500/10 text-red-500 font-bold rounded-lg text-xs hover:bg-red-500 hover:text-white transition-colors border border-red-500/30">
+                     Reset Account Progress
+                 </button>
+            </div>
+        </div>
+
+    </div>
+    </main>
+  
+
+  <script type="module">
+    import { auth, onAuthStateChanged, signOut, updateProfile } from './firebase-config.js';
+
+    lucide.createIcons();
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        } else {
+            // Force sync Google/Firebase profile over mock gamification state
+            let gamifyStr = localStorage.getItem("binbot_user");
+            let gamifyUser = gamifyStr ? JSON.parse(gamifyStr) : { xp: 0, level: 1 };
+            
+            let updated = false;
+            if (user.displayName && (!gamifyUser.username || gamifyUser.username === "BinWarrior" || gamifyUser.username === "Unknown")) {
+                gamifyUser.username = user.displayName;
+                updated = true;
+            }
+            if (user.photoURL && (!gamifyUser.avatar || gamifyUser.avatar === "null" || gamifyUser.avatar === "undefined")) {
+                gamifyUser.avatar = user.photoURL;
+                updated = true;
+            }
+            
+            if (updated) {
+                 localStorage.setItem("binbot_user", JSON.stringify(gamifyUser));
+                 userData = gamifyUser;
+                 populateFields();
+            }
+        }
+    });
+
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    };
+
+    // --- Profile Gamification Logic ---
+    const userStateStr = localStorage.getItem("binbot_user");
+    let userData = {
+        username: "Unknown",
+        xp: 0,
+        level: 1,
+        avatar: ""
+    };
+
+    if (userStateStr) {
+        userData = JSON.parse(userStateStr);
+    }
+
+    // DOM Elements
+    const usernameInput = document.getElementById('username');
+    const displayTitle = document.getElementById('display-name');
+    const levelTitle = document.getElementById('display-level');
+    const totalXpTxt = document.getElementById('total-xp-txt');
+    const totalScansTxt = document.getElementById('total-scans-txt');
+    
+    const avatarContainer = document.getElementById('avatar-container');
+    const avatarUploadInput = document.getElementById('avatar-upload');
+    const defaultAvatarIcon = document.getElementById('default-avatar-icon');
+    
+    const profileForm = document.getElementById('profile-form');
+    const saveStatus = document.getElementById('save-status');
+
+    // Populate Initial Data
+    function populateFields() {
+        usernameInput.value = userData.username;
+        displayTitle.textContent = userData.username;
+        levelTitle.textContent = userData.level;
+        totalXpTxt.textContent = userData.xp;
+        
+        // Mock scans count since XP goes up by 50 per scan
+        totalScansTxt.textContent = Math.floor(userData.xp / 50);
+
+        if (userData.avatar && userData.avatar !== "null" && userData.avatar !== "undefined") {
+            if(defaultAvatarIcon) defaultAvatarIcon.style.display = 'none';
+            
+            // Check if img tag exists, otherwise create it
+            let img = avatarContainer.querySelector('img');
+            if(!img) {
+                img = document.createElement('img');
+                img.className = 'w-full h-full object-cover relative z-10'; // Ensure it sits above the background
+                img.onerror = function() { 
+                    this.style.display='none'; 
+                    if(defaultAvatarIcon) defaultAvatarIcon.style.display='block'; 
+                };
+                avatarContainer.appendChild(img);
+            }
+            img.src = userData.avatar;
+            
+            // Update nav bar avatar too
+            const navAvatar = document.getElementById('profile-trigger-btn');
+            if(navAvatar) navAvatar.innerHTML = `<img src="${userData.avatar}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\\'user\\' class=\\'w-4 h-4 text-white\\'></i>'; if(window.lucide) window.lucide.createIcons();" />`;
+        } else {
+            // Restore default icon if avatar is cleared
+            if(defaultAvatarIcon) defaultAvatarIcon.style.display = 'block';
+            let img = avatarContainer.querySelector('img');
+            if (img) img.remove();
+            
+            // Restore nav bar avatar
+            const navAvatar = document.getElementById('profile-trigger-btn');
+            if(navAvatar) navAvatar.innerHTML = `<i data-lucide="user" class="w-4 h-4 text-white"></i>`;
+            if(window.lucide) window.lucide.createIcons();
+        }
+    }
+
+    populateFields();
+
+    // Setup Avatar Upload (Base64)
+    avatarUploadInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const base64Str = event.target.result;
+            userData.avatar = base64Str;
+            populateFields(); // Update instantly on UI
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Save Changes
+    profileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const newUsername = usernameInput.value.trim();
+        if (newUsername) {
+            userData.username = newUsername;
+            
+            // Try to update Firebase profile if authed
+            if (auth.currentUser) {
+                try {
+                    await updateProfile(auth.currentUser, { displayName: newUsername });
+                } catch(e) {
+                    console.error("Failed to update Firebase profile name", e);
+                }
+            }
+        }
+
+        // Save to localStorage
+        localStorage.setItem("binbot_user", JSON.stringify(userData));
+        
+        populateFields();
+
+        // Show Saved Status Text
+        saveStatus.classList.remove("opacity-0");
+        setTimeout(() => saveStatus.classList.add("opacity-0"), 2000);
+    });
+    
+    // Danger Zone reset
+    window.resetAccount = function() {
+        showConfirm("This will delete all your XP and reset you to Level 1. This cannot be undone.", () => {
+            userData.xp = 0;
+            userData.level = 1;
+            localStorage.setItem("binbot_user", JSON.stringify(userData));
+            populateFields();
+            showToast("Account progress has been reset.", "success");
+        });
+    };
+
+  </script>
+  
+
+  
+  <footer class="pf-footer">
+    <div class="pf-footer-wrap">
+      <div class="pf-footer-grid">
+        <div>
+          <a href="index.html" class="pf-brand-link">
+            <span class="pf-logo" aria-hidden="true">
+              <i data-lucide="leaf" class="w-4 h-4"></i>
+            </span>
+            <span class="pf-name">BinBot</span>
+          </a>
+          <p class="pf-copy">Sort smarter, recycle faster, and build daily habits for a cleaner planet.</p>
+        </div><br><br>
+
+        <nav aria-label="Legal links">
+          <span class="pf-nav-title">Legal</span>
+          <div class="pf-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="pf-bottom">&copy; 2026 BinBot. Built for a greener planet.</div>
+    </div>
+  </footer>
+<script src="js/ui-effects.js" defer></script>
+</body>
+</html>
+

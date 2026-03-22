@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - BinBot</title>
+  
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css?v=20260307">
+    <link rel="icon" href="favicon.png">
+  
+  <style>
+    .pf-footer {
+      border-top: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--surface-0) 92%, #000 8%);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
+    }
+    .pf-footer-wrap {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2.25rem 1rem 1.25rem;
+    }
+    .pf-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pf-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+    }
+    .pf-logo {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--icon-accent-border);
+      color: var(--icon-accent);
+      background: color-mix(in srgb, var(--icon-accent-soft) 56%, transparent 44%);
+    }
+    .pf-name {
+      color: var(--text-color);
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .pf-copy {
+      margin: 0.75rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 32ch;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .pf-nav-title {
+      color: var(--text-color);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+      display: block;
+    }
+    .pf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+    .pf-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.42rem 0.74rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent 12%);
+      transition: all 0.2s ease;
+    }
+    .pf-links a:hover {
+      color: var(--text-color);
+      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface-hover) 55%, transparent 45%);
+    }
+    .pf-bottom {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent 22%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pf-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .pf-copy {
+        max-width: 100%;
+      }
+    }
+  
+    :root[data-theme="light"] .pf-footer {
+      background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+  <!-- Floating Navigation -->
+
+  <nav class="fixed top-0 w-full z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex-shrink-0">
+          <a href="dashboard.html" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <span class="font-bold tracking-tight text-white">BinBot</span>
+          </a>
+        </div>
+
+        <div class="hidden md:block">
+          <div class="flex items-baseline space-x-1">
+            <a href="index.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Home
+            </a>
+            <a href="dashboard.html" class="mx-1 px-4 py-2 bg-white/10 text-white rounded-full text-xs font-semibold shadow-inner border border-white/5 transition-all">
+              Dashboard
+            </a>
+            <a href="classify.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Classify
+            </a>
+            <a href="history.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              History
+            </a>
+            <a href="analytics.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Analytics
+            </a>
+            <a href="map.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Map
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+            <a href="profile.html" id="profile-trigger-btn" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center overflow-hidden border border-white/20 shrink-0">
+                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <div class="-mr-2 flex md:hidden">
+          <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-full text-[#86868B] hover:text-white hover:bg-white/10 focus:outline-none transition-all">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Ambient Glow -->
+    <!-- Ambient Glow -->
+    <div class="ambient-glow bg-emerald-500 top-0 left-[-10%] hidden md:block"></div>
+    <div class="ambient-glow bg-[#34C759] top-[20%] right-[-10%] hidden md:block"></div>  
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#111111] border-b border-white/10">
+      <div class="px-4 pt-2 pb-4 space-y-1">
+        <a href="index.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Home</a>
+        <a href="dashboard.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-white bg-white/10">Dashboard</a>
+        <a href="classify.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Classify</a>
+        <a href="history.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">History</a>
+        <a href="analytics.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Analytics</a>
+        <a href="map.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Map</a>
+        <a href="profile.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Profile</a>
+        <button onclick="handleLogout()" class="w-full text-left px-4 py-3 rounded-2xl text-base font-medium text-red-400 hover:bg-white/5 mt-2">Sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-glow bg-emerald-500 top-0 left-[-10%] hidden md:block"></div>
+  <div class="ambient-glow bg-[#34C759] top-[20%] right-[-10%] hidden md:block"></div>
+
+  <!-- Main Content -->
+  <main class="relative z-10 pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+    <!-- Header -->
+    <div class="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-4xl font-black tracking-tight text-white mb-1">BinBot</h1>
+            <p class="text-[#86868B] font-medium text-sm">Welcome back, Test User. Here's your impact this week.</p>
+        </div>
+        <a href="classify.html" class="px-6 py-3 bg-white text-black font-bold rounded-full text-sm hover:scale-105 active:scale-95 transition-transform shadow-[0_4px_20px_rgba(255,255,255,0.15)] inline-flex items-center justify-center gap-2 shrink-0">
+            <i data-lucide="scan" class="w-4 h-4"></i>
+            Identify Item
+        </a>
+    </div>
+
+    <!-- Bento Grid Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(180px,_auto)]">
+        
+        <!-- Large Primary Stat Card -->
+        <div class="bento-card p-8 md:col-span-2 flex flex-col justify-between overflow-hidden relative">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#34C759]/20 to-transparent blur-2xl rounded-full transform translate-x-1/3 -translate-y-1/3"></div>
+            
+            <div class="flex items-center justify-between mb-8 relative z-10">
+                <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center border border-white/10 backdrop-blur-md">
+                    <i data-lucide="trending-up" class="w-6 h-6 text-[#34C759]"></i>
+                </div>
+                <span class="px-3 py-1 bg-[#34C759]/20 text-[#34C759] text-xs font-bold rounded-full border border-[#34C759]/30 tracking-wide">+12.5% this week</span>
+            </div>
+            
+            <div class="relative z-10">
+                <p class="text-[#86868B] font-semibold text-sm mb-1 uppercase tracking-widest">Total Diversion Rate</p>
+                <div class="flex items-baseline gap-2">
+                    <h2 class="text-5xl sm:text-7xl font-black tracking-tighter text-white"><span id="stat-diversion">0</span><span class="text-3xl sm:text-5xl text-[#86868B]">%</span></h2>
+                </div>
+                <p class="mt-4 text-[#86868B] text-sm font-medium">You've successfully diverted <strong class="text-white"><span id="stat-total-diverted">0</span> items</strong> from landfills since joining.</p>
+            </div>
+        </div>
+
+        <!-- Level/Badges Small Card -->
+        <div class="bento-card p-8 flex flex-col justify-between item-center group">
+            <div class="flex justify-between items-center w-full mb-4">
+                <p class="text-[#86868B] font-semibold text-sm uppercase tracking-widest">Current Level</p>
+                <i data-lucide="award" class="w-5 h-5 text-[#EAB308]"></i>
+            </div>
+            
+            <div class="flex flex-col items-center flex-grow justify-center text-center">
+                <div class="w-24 h-24 mb-4 relative">
+                    <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 36 36">
+                        <path class="text-white/10" stroke-dasharray="100, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="currentColor" stroke-width="3" fill="none"/>
+                        <path class="text-[#EAB308] transition-all duration-1000 ease-out" stroke-dasharray="75, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-2xl font-black text-white">42</span>
+                    </div>
+                </div>
+                <h3 id="level-card-name" class="font-bold text-lg text-white">Bin Warrior</h3>
+                <p class="text-[#86868B] text-xs font-medium mt-1">2,500 XP to Level 43</p>
+            </div>
+        </div>
+
+        <!-- Metric Card 1 -->
+        <div class="bento-card p-8 flex flex-col justify-between">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-[#0071E3]/20 flex items-center justify-center border border-[#0071E3]/30">
+                    <i data-lucide="recycle" class="w-5 h-5 text-[#0071E3]"></i>
+                </div>
+                <p class="text-[#86868B] font-semibold text-sm uppercase tracking-widest">Recycled</p>
+            </div>
+            <div>
+                <h3 class="text-6xl md:text-8xl font-black tracking-tighter text-white" id="stat-recycled">0</h3>
+                <p class="text-[#86868B] text-xs font-medium md:text-sm md:mt-2">Items verified</p>
+            </div>
+        </div>
+
+        <!-- Metric Card 2 -->
+        <div class="bento-card p-8 flex flex-col justify-between">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-[#34C759]/20 flex items-center justify-center border border-[#34C759]/30">
+                    <i data-lucide="leaf" class="w-5 h-5 text-[#34C759]"></i>
+                </div>
+                <p class="text-[#86868B] font-semibold text-sm uppercase tracking-widest">Composted</p>
+            </div>
+            <div>
+                <h3 class="text-6xl md:text-8xl font-black tracking-tighter text-white" id="stat-composted">0</h3>
+                <p class="text-[#86868B] text-xs font-medium md:text-sm md:mt-2">Items verified</p>
+            </div>
+        </div>
+
+        <!-- Recent Activity Mini-History -->
+        <div class="bento-card p-8 md:col-span-1 lg:col-span-1 border border-white/5 bg-[#111111]/80 shadow-none">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-white text-lg tracking-tight">Recent Scans</h3>
+                <a href="history.html" class="text-xs font-bold text-white/50 hover:text-white transition-colors uppercase tracking-wider">View All</a>
+            </div>
+            
+            <div id="recent-scans-container" class="space-y-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+    </div>
+  </main>
+  
+
+  <script type="module">
+    import { auth, onAuthStateChanged, signOut, db } from './firebase-config.js';
+    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    lucide.createIcons();
+
+    // Mobile Menu Toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // Auth Protection
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        } else {
+            // Sync Firebase details to gamification state dynamically
+            let gamifyStr = localStorage.getItem("binbot_user");
+            let gamifyUser = gamifyStr ? JSON.parse(gamifyStr) : { xp: 0, level: 1 };
+            
+            let updated = false;
+            // Only capture from Firebase if local state doesn't have it, so we don't accidentally overwrite custom names/DPs
+            if (user.displayName && (!gamifyUser.username || gamifyUser.username === "BinWarrior" || gamifyUser.username === "Unknown")) {
+                gamifyUser.username = user.displayName;
+                updated = true;
+            }
+            if (user.photoURL && (!gamifyUser.avatar || gamifyUser.avatar === "null" || gamifyUser.avatar === "undefined")) {
+                gamifyUser.avatar = user.photoURL;
+                updated = true;
+            }
+            if (updated) {
+                localStorage.setItem("binbot_user", JSON.stringify(gamifyUser));
+            }
+
+            // Update UI with real name if available, fallback to gamification state if needed
+            const greetingEl = document.querySelector('h1.text-4xl + p');
+            if (greetingEl) {
+                greetingEl.textContent = `Welcome back, ${gamifyUser.username || user.displayName || 'Bin Warrior'}. Here's your impact this week.`;
+            }
+
+            // Update level card name with real name
+            const levelNameEl = document.getElementById('level-card-name');
+            if (levelNameEl) {
+                levelNameEl.textContent = gamifyUser.username || user.displayName || 'Bin Warrior';
+            }
+            
+            // Render avatar dynamically
+            const avatarContainer = document.getElementById("profile-trigger-btn");
+            const finalAvatar = gamifyUser.avatar || user.photoURL;
+            if(avatarContainer && finalAvatar && finalAvatar !== "null" && finalAvatar !== "undefined") {
+                avatarContainer.innerHTML = `<img src="${finalAvatar}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\\'user\\' class=\\'w-4 h-4 text-white\\'></i>'; if(window.lucide) window.lucide.createIcons();" />`;
+            }
+            
+            // Once authenticated, fetch dashboard stats from Firebase
+            loadDashboardStats(user.uid);
+        }
+    });
+
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem("token"); // Cleanup legacy
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    };
+    // Render User Gamification Data
+    const userStateStr = localStorage.getItem("binbot_user");
+    if(userStateStr) {
+        const gamifyUser = JSON.parse(userStateStr);
+        
+        // Greeting is handled by auth observer, but fallback here
+        const greetingEl = document.querySelector('h1.text-4xl + p');
+        if(greetingEl && greetingEl.textContent.includes('Welcome back') && !auth.currentUser?.displayName) {
+            greetingEl.textContent = `Welcome back, ${gamifyUser.username}. Here's your impact this week.`;
+        }
+        
+        // Update level ring
+        const levelRingTxt = document.querySelector('.text-2xl.font-black.text-white');
+        if (levelRingTxt) levelRingTxt.textContent = gamifyUser.level;
+        
+        // Update next level text
+        const nextXpTxt = document.querySelector('.text-xs.font-medium.mt-1');
+        if (nextXpTxt && nextXpTxt.textContent.includes('XP to Level')) {
+            const nextLevel = gamifyUser.level + 1;
+            const xpForNext = nextLevel * 500;
+            const xpNeeded = xpForNext - gamifyUser.xp;
+            nextXpTxt.textContent = `${xpNeeded} XP to Rank ${nextLevel}`;
+            
+            // Adjust the SVG ring fill percentage
+            const svgPath = document.querySelector('.bento-card svg path[stroke-linecap="round"]');
+            if(svgPath) {
+                const baseXP = (gamifyUser.level - 1) * 500;
+                const progressInLevel = gamifyUser.xp - baseXP;
+                const percentage = Math.max(5, Math.floor((progressInLevel / 500) * 100));
+                svgPath.setAttribute('stroke-dasharray', `${percentage}, 100`);
+            }
+        }
+        
+        // Setup Avatar if exists (Fallback to default if not)
+        const avatarContainer = document.getElementById("profile-trigger-btn");
+        if(avatarContainer && gamifyUser.avatar) {
+            avatarContainer.innerHTML = `<img src="${gamifyUser.avatar}" class="w-full h-full object-cover" />`;
+        }
+    }
+    
+    function timeSince(dateStr) {
+        if (!dateStr) return "Just now";
+        const date = new Date(dateStr);
+        const seconds = Math.floor((new Date() - date) / 1000);
+        let interval = seconds / 31536000;
+        if (interval > 1) return Math.floor(interval) + " years ago";
+        interval = seconds / 2592000;
+        if (interval > 1) return Math.floor(interval) + " months ago";
+        interval = seconds / 86400;
+        if (interval > 1) return Math.floor(interval) + (Math.floor(interval)===1?" day ago":" days ago");
+        interval = seconds / 3600;
+        if (interval > 1) return Math.floor(interval) + " hours ago";
+        interval = seconds / 60;
+        if (interval > 1) return Math.floor(interval) + " mins ago";
+        return Math.floor(seconds) + " seconds ago";
+    }
+
+    // Populate Overview Stats from Firebase
+    async function loadDashboardStats(userId) {
+        let historyData = [];
+        try {
+            const q = query(
+                collection(db, "classifications"),
+                where("userId", "==", userId)
+            );
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((docSnap) => {
+                historyData.push(docSnap.data());
+            });
+            // Sort client-side (newest first)
+            historyData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        } catch (error) {
+            console.error("Firebase fetch failed, falling back to local:", error);
+            historyData = JSON.parse(localStorage.getItem("binbot_history")) || [];
+        }
+        
+        // 1. Calculate and update stats
+        let stats = { recycled: 0, composted: 0, total: historyData.length || 1 }; // prevent div 0
+        
+        if (historyData.length > 0) {
+            historyData.forEach(entry => {
+                const b = (entry.bin || "").toLowerCase();
+                if (b.includes("recycle") || b.includes("blue") || b.includes("e-waste") || b.includes("black")) {
+                    stats.recycled++;
+                } else if (b.includes("compost") || b.includes("green")) {
+                    stats.composted++;
+                }
+            });
+        } else {
+            stats.total = 0; // if actually empty
+        }
+        
+        const divertedCount = stats.recycled + stats.composted;
+        const diversionRate = stats.total > 0 ? Math.round((divertedCount / stats.total) * 100) : 0;
+        
+        document.getElementById("stat-diversion").textContent = diversionRate;
+        document.getElementById("stat-total-diverted").textContent = divertedCount;
+        document.getElementById("stat-recycled").textContent = stats.recycled;
+        document.getElementById("stat-composted").textContent = stats.composted;
+
+        // 2. Populate Recent Scans Panel
+        const container = document.getElementById("recent-scans-container");
+        
+        if (historyData.length === 0) {
+            container.innerHTML = `<p class="text-sm text-[#86868B]">No scans yet. Go identify an item via the Classify page to build your impact!</p>`;
+        } else {
+            container.innerHTML = "";
+            // Show up to 4 recent items
+            historyData.slice(0, 4).forEach(entry => {
+                let badgeBg = "bg-gray-500/20";
+                let badgeBorder = "border-gray-500/30";
+                let textCol = "text-gray-400";
+                
+                if (entry.color === "green") { badgeBg="bg-[#34C759]/20"; badgeBorder="border-[#34C759]/30"; textCol="text-[#34C759]"; }
+                else if (entry.color === "blue") { badgeBg="bg-[#0071E3]/20"; badgeBorder="border-[#0071E3]/30"; textCol="text-[#0071E3]"; }
+                else if (entry.color === "red") { badgeBg="bg-red-500/20"; badgeBorder="border-red-500/30"; textCol="text-red-500"; }
+                else if (entry.color === "yellow") { badgeBg="bg-yellow-500/20"; badgeBorder="border-yellow-500/30"; textCol="text-yellow-500"; }
+                else if (entry.color === "black") { badgeBg="bg-zinc-700/50"; badgeBorder="border-zinc-500/30"; textCol="text-zinc-300"; }
+
+                const div = document.createElement("div");
+                div.className = "flex items-center gap-4 group cursor-pointer hover:bg-white/5 p-2 rounded-xl transition-colors -mx-2";
+                div.innerHTML = `
+                    <div class="w-10 h-10 rounded-full ${badgeBg} flex items-center justify-center border ${badgeBorder} shrink-0">
+                        <i data-lucide="${entry.icon || 'help-circle'}" class="w-4 h-4 ${textCol}"></i>
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <p class="text-sm font-bold text-white truncate capitalize">${entry.item || "Unknown"}</p>
+                        <p class="text-xs font-medium text-[#86868B]">${timeSince(entry.timestamp)} - ${entry.matchScore || "N/A"} match</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+    }
+  </script>
+  
+
+  
+  <footer class="pf-footer">
+    <div class="pf-footer-wrap">
+      <div class="pf-footer-grid">
+        <div>
+          <a href="index.html" class="pf-brand-link">
+            <span class="pf-logo" aria-hidden="true">
+              <i data-lucide="leaf" class="w-4 h-4"></i>
+            </span>
+            <span class="pf-name">BinBot</span>
+          </a>
+          <p class="pf-copy">Sort smarter, recycle faster, and build daily habits for a cleaner planet.</p>
+        </div><br><br>
+
+        
+
+        <nav aria-label="Legal links">
+          <span class="pf-nav-title">Legal</span>
+          <div class="pf-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="pf-bottom">&copy; 2026 BinBot. Built for a greener planet.</div>
+    </div>
+  </footer>
+<script src="js/ui-effects.js" defer></script>
+</body>
+
+</html>
+

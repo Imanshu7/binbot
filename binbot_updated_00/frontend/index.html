@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BinBot - Waste Segregation Reimagined with AI</title>
+  
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css?v=20260307">
+    <link rel="icon" href="favicon.png">
+
+  
+  <style>
+    .pf-footer {
+      border-top: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--surface-0) 92%, #000 8%);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
+    }
+    .pf-footer-wrap {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2.25rem 1rem 1.25rem;
+    }
+    .pf-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pf-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+    }
+    .pf-logo {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--icon-accent-border);
+      color: var(--icon-accent);
+      background: color-mix(in srgb, var(--icon-accent-soft) 56%, transparent 44%);
+    }
+    .pf-name {
+      color: var(--text-color);
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .pf-copy {
+      margin: 0.75rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 32ch;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .pf-nav-title {
+      color: var(--text-color);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+      display: block;
+    }
+    .pf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+    .pf-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.42rem 0.74rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent 12%);
+      transition: all 0.2s ease;
+    }
+    .pf-links a:hover {
+      color: var(--text-color);
+      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface-hover) 55%, transparent 45%);
+    }
+    .pf-bottom {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent 22%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pf-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .pf-copy {
+        max-width: 100%;
+      }
+    }
+  
+    :root[data-theme="light"] .pf-footer {
+      background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+  <!-- Floating Pill Navigation -->
+  <div class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+     <nav class="pointer-events-auto bg-[#1A1A1A]/70 backdrop-blur-2xl border border-white/10 rounded-full py-2 px-3 lg:px-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-between gap-4 sm:gap-6 w-[95%] sm:w-auto mx-auto transition-all duration-300">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 group shrink-0 sm:pr-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <span class="font-bold text-sm tracking-tight text-white">BinBot</span>
+        </a>
+        
+        <!-- Links -->
+        <div class="hidden md:flex items-center gap-4 lg:gap-6 border-x border-white/10 px-4 lg:px-6">
+            <a href="#how-it-works" class="text-xs font-medium text-[#86868B] hover:text-white transition-colors">How it Works</a>
+            <a href="#features" class="text-xs font-medium text-[#86868B] hover:text-white transition-colors">Features</a>
+            
+        </div>
+
+        <!-- Auth -->
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0 sm:pl-2">
+            <a href="login.html" class="px-3 sm:px-4 py-2 text-[11px] sm:text-xs font-bold text-white border border-white/20 hover:bg-white/10 transition-colors rounded-full shadow-[0_0_10px_rgba(255,255,255,0.05)]">Log in</a>
+            <a href="register.html" class="px-3 sm:px-4 py-2 text-[11px] sm:text-xs font-bold bg-white text-black hover:bg-[#E8E8ED] transition-colors rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)]">Get Started</a>
+        </div>
+     </nav>
+  </div>
+
+  <!-- Hero Section -->
+    <section class="hero-home relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden pt-32 pb-20 px-4">
+    <!-- Ambient Background Glows -->
+    <div class="absolute top-[20%] left-[50%] -translate-x-1/2 w-[800px] h-[600px] bg-emerald-500/15 blur-[120px] rounded-full mix-blend-screen hero-glow pointer-events-none"></div>
+    <div class="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] bg-[#34C759]/10 blur-[120px] rounded-full mix-blend-screen hero-glow pointer-events-none" style="animation-delay: -4s"></div>
+    
+    <div class="relative z-10 text-center max-w-5xl mx-auto flex flex-col items-center">
+        <div class="hero-home-badge inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/15 bg-white/5 backdrop-blur-md mb-8">
+            <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34C759] opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-[#34C759]"></span>
+            </span>
+            <span class="text-[11px] font-bold tracking-widest uppercase text-white/80">BinBot Active</span>
+        </div>
+
+        <h1 class="text-5xl sm:text-7xl md:text-8xl font-black tracking-tighter text-white mb-6 leading-[1.05]">
+            Sorting waste for<br>
+            <span class="hero-home-accent bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-green-300 to-emerald-500">a greener planet</span>
+        </h1>
+        
+        <p class="hero-home-copy text-base sm:text-lg md:text-2xl text-[#86868B] max-w-2xl mx-auto font-medium tracking-tight mb-8 md:mb-12 leading-relaxed">
+            A friendly companion that helps you recycle right. Snap a photo of any item, and we'll tell you exactly where it goes. Together, we can make a difference.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto px-4 md:px-0">
+            <a href="register.html" class="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 bg-white text-black text-sm sm:text-base font-bold rounded-full hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                Start for free
+            </a>
+            
+        </div>
+    </div>
+    
+    <!-- Interactive Hero Visualization -->
+    <div class="mt-16 md:mt-24 relative w-full max-w-5xl mx-auto aspect-square sm:aspect-video lg:aspect-[21/9] bg-[#0A0A0A] rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden group cursor-pointer">
+        <!-- Abstract moving grid background -->
+        <div class="hero-home-grid absolute inset-0 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        
+        <!-- Animated Scanner Line -->
+        <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-50 shadow-[0_0_15px_#10B981] z-10" style="animation: scan 3s ease-in-out infinite alternate;"></div>
+
+        <div class="absolute inset-0 flex items-center justify-center">
+            
+            <!-- Central Processing UI -->
+            <div class="relative w-full h-full flex items-center justify-center">
+                
+                <!-- Pulsing Core -->
+                <div class="w-32 h-32 md:w-48 md:h-48 rounded-full border border-emerald-500/30 flex items-center justify-center relative z-20">
+                    <div class="absolute inset-0 rounded-full border border-emerald-500/30 animate-ping opacity-10" style="animation-duration: 4s;"></div>
+                    <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border border-[#34C759]/30 flex items-center justify-center backdrop-blur-md bg-[#000000]/50 overflow-hidden relative shadow-[0_0_30px_rgba(52,199,89,0.1)]">
+                         <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent/20 animate-spin" style="animation-duration: 5s;"></div>
+                         <i data-lucide="leaf" class="w-8 h-8 md:w-10 md:h-10 text-white relative z-10 transition-transform duration-500 group-hover:scale-110"></i>
+                    </div>
+                </div>
+
+                <!-- Animated Data Nodes connecting to core -->
+                <div class="absolute w-full h-full inset-0 z-10 hidden sm:block">
+                    <!-- Top Left Node -->
+                     <div class="absolute top-[20%] lg:top-[30%] left-[15%] lg:left-[25%] flex flex-col items-center gap-2 group/node">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-white/5 border border-white/10 backdrop-blur flex items-center justify-center transition-colors group-hover/node:bg-white/10">
+                            <i data-lucide="aperture" class="w-4 h-4 md:w-5 md:h-5 text-[#86868B]"></i>
+                        </div>
+                        <div class="px-3 py-1 bg-[#000000]/50 border border-white/5 rounded-full text-[10px] text-white/70 font-mono tracking-wider">Vision Active</div>
+                     </div>
+                     
+                     <!-- Bottom Right Node -->
+                     <div class="absolute bottom-[20%] lg:bottom-[30%] right-[15%] lg:right-[25%] flex flex-col items-center gap-2 group/node2">
+                        <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-[#34C759]/10 border border-[#34C759]/30 backdrop-blur flex items-center justify-center shadow-[0_0_15px_rgba(52,199,89,0.2)]">
+                            <i data-lucide="leaf" class="w-4 h-4 md:w-5 md:h-5 text-[#34C759]"></i>
+                        </div>
+                        <div class="px-3 py-1 bg-[#34C759]/10 border border-[#34C759]/30 rounded-full text-[10px] text-[#34C759] font-mono tracking-wider">Match: 99%</div>
+                     </div>
+                </div>
+            </div>
+            
+            <!-- Bottom floating status banner -->
+            <div class="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 bg-[#000000]/60 backdrop-blur-2xl border border-white/10 px-6 py-4 md:px-8 rounded-3xl md:rounded-full flex flex-row items-center justify-between gap-4 md:gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-30 transition-all duration-500 hover:border-white/20 hover:scale-[1.02] w-[90%] md:w-auto">
+                <div class="flex items-center gap-3 md:gap-4 shrink-0">
+                     <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                         <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+                     </div>
+                     <div class="flex flex-col text-sm">
+                       <span class="text-[#86868B] text-[10px] uppercase tracking-widest font-bold mb-0.5 hidden sm:block">Status</span>
+                       <div class="flex items-center gap-2">
+                           <span class="flex h-1.5 w-1.5 relative shrink-0">
+                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34C759] opacity-75"></span>
+                             <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#34C759]"></span>
+                           </span>
+                           <span class="font-bold text-white text-xs md:text-sm truncate">Bin-Scanner Ready</span>
+                       </div>
+                     </div>
+                </div>
+                <div class="h-8 w-px bg-white/10 shrink-0"></div>
+                <div class="flex items-center gap-4 md:gap-8 justify-end">
+                    <div class="flex flex-col">
+                        <span class="text-[#86868B] text-[10px] uppercase tracking-widest font-bold mb-0.5">Focus</span>
+                        <span class="font-mono text-white text-xs md:text-sm font-bold">Sharp</span>
+                    </div>
+                    <div class="flex flex-col hidden sm:flex">
+                        <span class="text-[#86868B] text-[10px] uppercase tracking-widest font-bold mb-0.5">Accuracy</span>
+                        <span class="font-mono text-[#34C759] text-xs md:text-sm font-bold">99.8%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- How it Works Section -->
+  <section id="how-it-works" class="py-24 px-4 max-w-7xl mx-auto relative z-10 mt-12">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-4">How it Works</h2>
+        <p class="text-xl text-[#86868B] max-w-2xl mx-auto font-medium">Three simple steps to smarter waste management and a greener footprint.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 relative">
+        <!-- Connecting Line for Desktop -->
+        <div class="hidden md:block absolute top-[45%] left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent z-0"></div>
+
+        <!-- Step 1 -->
+        <div class="relative z-10 flex flex-col items-center text-center p-6 rounded-3xl border border-white/10 bento-card group">
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-500 relative">
+                <div class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-sm shadow-lg">1</div>
+                <i data-lucide="camera" class="w-8 h-8 text-emerald-400"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-white mb-2">Snap & Identify</h3>
+            <p class="text-[#86868B] font-medium leading-relaxed">Simply point your camera, upload an image, or use text/voice search to identify your recyclable item.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative z-10 flex flex-col items-center text-center p-6 rounded-3xl border border-white/10 bento-card group">
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-500 relative">
+                <div class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-sm shadow-lg">2</div>
+                <i data-lucide="leaf" class="w-8 h-8 text-emerald-400"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-white mb-2">Clear Instructions</h3>
+            <p class="text-[#86868B] font-medium leading-relaxed">Our friendly scanner categorizes the material and gives you exact, local disposal instructions.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative z-10 flex flex-col items-center text-center p-6 rounded-3xl border border-white/10 bento-card group">
+            <div class="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.15)] group-hover:scale-110 transition-transform duration-500 relative">
+                <div class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white font-black text-sm shadow-lg">3</div>
+                <i data-lucide="award" class="w-8 h-8 text-emerald-400"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-white mb-2">Grow Your Impact</h3>
+            <p class="text-[#86868B] font-medium leading-relaxed">Log your disposal to earn bin-points, level up, and watch your positive environmental footprint grow.</p>
+        </div>
+    </div>
+  </section>
+
+  <!-- Bento Box Features Grid -->
+  <section id="features" class="py-24 px-4 max-w-7xl mx-auto relative z-10 border-t border-white/10">
+    <div class="text-center mb-16 mt-8">
+        <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white mb-4">Built for impact</h2>
+        <p class="text-xl text-[#86868B] max-w-2xl mx-auto font-medium">Everything you need to sort smarter, track your journey, and make a real difference - all in one place.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-auto">
+        
+        <!-- Feature 1: AI Classification (Large) -->
+        <div class="bento-card md:col-span-2 p-6 md:p-10 flex flex-col justify-end relative overflow-hidden group md:min-h-[280px]">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-emerald-500/20 to-teal-500/0 blur-2xl rounded-full transform translate-x-1/2 -translate-y-1/2 group-hover:scale-150 transition-transform duration-700"></div>
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-emerald-500/30">
+                <i data-lucide="scan" class="w-7 h-7 text-emerald-400"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-white mb-2 tracking-tight">AI-Powered Classification</h3>
+            <p class="text-[#86868B] text-lg font-medium leading-relaxed">Identify any waste item using <strong class="text-white">Image Scan</strong>, <strong class="text-white">Text Search</strong>, or <strong class="text-white">Voice Input</strong>. Powered by TensorFlow.js for high accuracy.</p>
+            <div class="flex gap-3 mt-5 flex-wrap">
+                <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-white/70 uppercase tracking-wider">Image</span>
+                <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-white/70 uppercase tracking-wider">Text</span>
+                <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-white/70 uppercase tracking-wider">Voice</span>
+            </div>
+        </div>
+
+        <!-- Feature 5: Dashboard -->
+        <div class="bento-card p-6 md:p-10 flex flex-col justify-between relative overflow-hidden group md:min-h-[280px]">
+            <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="bar-chart-3" class="w-32 h-32"></i>
+            </div>
+            <div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-purple-500/30">
+                    <i data-lucide="layout-dashboard" class="w-7 h-7 text-emerald-400"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-3">Live Dashboard</h3>
+            </div>
+            <p class="text-[#86868B] font-medium leading-relaxed mt-3">Track your diversion rate, recycled & composted items, recent scans, and impact - all updated in real-time.</p>
+        </div>
+
+        
+
+        <!-- Feature 3: Interactive Map -->
+        <div class="bento-card p-6 md:p-10 flex flex-col justify-between relative overflow-hidden group md:min-h-[280px]">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-teal-500/30">
+                <i data-lucide="map-pin" class="w-7 h-7 text-emerald-400"></i>
+            </div>
+            <div>
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-3">Interactive Map</h3>
+                <p class="text-[#86868B] font-medium leading-relaxed">Find nearby recycling centers, e-waste drop-offs, and composting facilities on a live interactive map powered by OpenStreetMap.</p>
+            </div>
+        </div>
+
+        <!-- Feature 8: Wasti AI -->
+        <div class="bento-card md:col-span-2 p-6 md:p-10 flex flex-col justify-end relative overflow-hidden group md:min-h-[280px]">
+            <div class="absolute top-0 right-0 w-64 h-64 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="sparkles" class="w-32 h-32"></i>
+            </div>
+            <div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-blue-500/30">
+                    <i data-lucide="bot" class="w-7 h-7 text-emerald-400"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-3">Wasti AI Assistant</h3>
+            </div>
+            <p class="text-[#86868B] font-medium leading-relaxed mt-3">Ask anything - from waste sorting to coding to math. Powered by Gemini AI with a smart offline fallback for instant answers anytime.</p>
+        </div>
+
+        <!-- Feature 2: Cloud Sync -->
+        <div class="bento-card md:col-span-2 p-6 md:p-10 flex flex-col justify-end relative overflow-hidden group md:min-h-[280px]">
+            <div class="absolute top-0 right-0 w-64 h-64 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                <i data-lucide="cloud" class="w-32 h-32"></i>
+            </div>
+            <div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-blue-500/30">
+                    <i data-lucide="cloud" class="w-7 h-7 text-emerald-400"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-3">Cloud Sync</h3>
+            </div>
+            <p class="text-[#86868B] font-medium leading-relaxed mt-3">Your scan history and profile sync across all devices via Our Server. Log in from any browser and pick up right where you left off.</p>
+        </div>
+
+        <!-- Feature 6: History & CSV Export -->
+        <div class="bento-card p-6 md:p-10 flex flex-col justify-between relative overflow-hidden group md:min-h-[280px]">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-emerald-500/30">
+                <i data-lucide="file-spreadsheet" class="w-7 h-7 text-emerald-400"></i>
+            </div>
+            <div>
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-3">History & CSV Export</h3>
+                <p class="text-[#86868B] font-medium leading-relaxed">Every scan is logged. Search, filter by category, and export your entire history as a CSV file for offline analysis.</p>
+            </div>
+        </div>
+
+        <!-- Feature 7: Voice I/O -->
+        <div class="bento-card p-6 md:p-10 flex flex-col justify-between relative overflow-hidden group md:min-h-[280px]">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-emerald-500/30">
+                <i data-lucide="mic" class="w-7 h-7 text-emerald-400"></i>
+            </div>
+            <div>
+                <h3 class="text-3xl font-bold text-white tracking-tight mb-3">Voice Input & Output</h3>
+                <p class="text-[#86868B] font-medium leading-relaxed">Speak your item name using voice search. BinBot reads back the result aloud - fully hands-free waste sorting.</p>
+            </div>
+        </div>
+
+
+        <!-- Feature 4: XP & Gamification (Large) -->
+        <div class="bento-card md:col-span-2 p-6 md:p-10 flex flex-col justify-start relative overflow-hidden group md:min-h-[280px]">
+            <div class="absolute top-8 right-8 bottom-8 w-[40%] bg-[#000000]/50 border border-emerald-500/30 rounded-2xl p-6 hidden lg:flex flex-col gap-4 backdrop-blur-sm overflow-hidden opacity-60 group-hover:opacity-90 transition-opacity">
+                 <div class="flex items-center gap-4 border-b border-white/10 pb-4">
+                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-yellow-500/30">
+                         <span class="text-xl font-bold text-emerald-400">Lv3</span>
+                     </div>
+                     <div>
+                         <div class="text-white font-bold text-sm">BinWarrior</div>
+                         <div class="text-[#86868B] text-xs">1,200 / 1,500 XP</div>
+                     </div>
+                 </div>
+                 <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                     <div class="h-full bg-gradient-to-r from-yellow-500 to-emerald-500 w-[80%]"></div>
+                 </div>
+                 <div class="mt-4 flex gap-2 flex-wrap">
+                     <span class="px-2 py-1 rounded bg-[#34C759]/20 text-[#34C759] text-[10px] font-bold">+50 XP per Scan</span>
+                     <span class="px-2 py-1 rounded bg-yellow-500/20 text-yellow-400 text-[10px] font-bold">Level Up Alerts</span>
+                 </div>
+            </div>
+            <div class="relative z-10 w-full lg:w-[55%] lg:pr-8 h-full flex flex-col justify-end">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent flex items-center justify-center mb-6 border border-emerald-500/30">
+                    <i data-lucide="trophy" class="w-7 h-7 text-emerald-400"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-white mb-2 tracking-tight">XP & Gamification</h3>
+                <p class="text-[#86868B] text-lg font-medium leading-relaxed">Earn 50 XP for every scan. Level up, unlock ranks, and get animated toast notifications for every milestone you hit.</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+    <!-- Footer -->
+  
+
+  <script src="js/ai-assistant.js"></script>
+  
+
+  <script>
+    lucide.createIcons();
+  </script>
+  
+  <style>
+
+  </style>
+
+  
+  <footer class="pf-footer">
+    <div class="pf-footer-wrap">
+      <div class="pf-footer-grid">
+        <div>
+          <a href="index.html" class="pf-brand-link">
+            <span class="pf-logo" aria-hidden="true">
+              <i data-lucide="leaf" class="w-4 h-4"></i>
+            </span>
+            <span class="pf-name">BinBot</span>
+          </a>
+          <p class="pf-copy">Sort smarter, recycle faster, and build daily habits for a cleaner planet.</p>
+        </div>
+
+        <nav aria-label="Quick links">
+          <span class="pf-nav-title">Quick Links</span>
+          <div class="pf-links">
+            <a href="classify.html">Classify</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="history.html">History</a>
+            <a href="map.html">Map</a>
+          </div>
+        </nav>
+
+        <nav aria-label="Legal links">
+          <span class="pf-nav-title">Legal</span>
+          <div class="pf-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="pf-bottom">&copy; 2026 BinBot. Built for a greener planet.</div>
+    </div>
+  </footer>
+<script>
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+</script>
+<script src="js/ui-effects.js" defer></script>
+</body>
+
+</html>

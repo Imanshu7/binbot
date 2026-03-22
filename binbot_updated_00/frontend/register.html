@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - BinBot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css?v=20260307">
+    <script src="js/toast.js"></script>
+    <link rel="icon" href="favicon.png">
+</head>
+<body class="min-h-screen flex flex-col relative overflow-x-hidden selection:bg-white/20 selection:text-white">
+
+    <!-- Back to Home -->
+    <a href="index.html" class="absolute top-8 left-8 z-50 flex items-center gap-2 text-[#86868B] hover:text-white transition-colors text-sm font-semibold group">
+        <i data-lucide="arrow-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i> Home
+    </a>
+
+    <!-- Abstract Background (Adjusted position for register page) -->
+    <div class="bg-shape w-[600px] h-[600px] bg-[#34C759] top-[-10%] right-[-10%]"></div>
+    <div class="bg-shape w-[500px] h-[500px] bg-emerald-600 bottom-[-10%] left-[-10%]" style="animation-duration: 15s; animation-delay: -5s;"></div>
+
+    <main class="flex-1 w-full flex items-center justify-center py-12 px-4">
+    <div class="w-full max-w-md relative z-10">
+        
+        <div class="flex justify-center mb-6">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.15)] hover:scale-105 transition-transform duration-300">
+                <i data-lucide="leaf" class="w-6 h-6 text-emerald-400"></i>
+            </div>
+        </div>
+        
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black tracking-tight text-white mb-2">Create your account</h1>
+            <p class="text-[#86868B] font-medium text-sm">Join our community and redefine your environmental impact.</p>
+        </div>
+
+        <div class="glass-panel p-8 sm:p-10 w-full mb-8">
+            <form id="registerForm" class="space-y-4">
+                
+                <div>
+                    <label for="name" class="sr-only">Full Name</label>
+                    <input id="name" name="name" type="text" required placeholder="Full Name"
+                        class="w-full bg-[#000000]/40 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium placeholder-[#86868B]">
+                </div>
+
+                <div>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required placeholder="name@example.com"
+                        class="w-full bg-[#000000]/40 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium placeholder-[#86868B]">
+                </div>
+
+                <div>
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" required placeholder="Create a password"
+                        class="w-full bg-[#000000]/40 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium placeholder-[#86868B]">
+                </div>
+
+                <div>
+                    <label for="confirmPassword" class="sr-only">Confirm Password</label>
+                    <input id="confirmPassword" name="confirmPassword" type="password" required placeholder="Confirm your password"
+                        class="w-full bg-[#000000]/40 border border-white/10 text-white rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium placeholder-[#86868B]">
+                    <!-- Basic inline validation message container -->
+                    <p id="error-msg" class="text-red-400 text-xs font-medium mt-2 hidden pl-1"></p>
+                </div>
+
+                <!-- Terms -->
+                <div class="flex items-start py-2">
+                    <div class="flex items-center h-5">
+                      <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 bg-transparent border-white/20 rounded accent-white">
+                    </div>
+                    <div class="ml-3 text-xs text-[#86868B]">
+                      <label for="terms" class="font-medium">
+                        I agree to the <a href="terms.html" class="text-white hover:underline">Terms of Service</a> and <a href="privacy.html" class="text-white hover:underline">Privacy Policy</a>
+                      </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn"
+                    class="w-full bg-white text-black font-bold text-sm py-4 mt-2 rounded-xl hover:scale-[0.98] active:scale-[0.96] transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-white">
+                    Sign Up with Email
+                </button>
+            </form>
+
+            <div class="relative flex py-6 items-center">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span class="flex-shrink-0 mx-4 text-[#86868B] text-xs font-medium uppercase tracking-widest">Or</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <button type="button" id="google-btn"
+                class="w-full bg-[#000000]/60 border border-white/10 hover:border-white/30 text-white font-bold text-sm py-4 rounded-xl hover:scale-[0.98] active:scale-[0.96] transition-all focus:outline-none flex items-center justify-center gap-3">
+                <svg viewBox="0 0 24 24" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
+                Continue with Google
+            </button>
+            
+            <div class="mt-8 text-center text-sm font-medium text-[#86868B]">
+                Already have an account? <a href="login.html" class="text-white hover:underline underline-offset-4">Log in</a>
+            </div>
+        </div>
+    </div>
+    </main>
+
+    
+    
+    <script type="module">
+        import { auth, googleProvider, createUserWithEmailAndPassword, updateProfile, signInWithPopup, db, doc, setDoc, getDoc, serverTimestamp } from './firebase-config.js';
+
+        lucide.createIcons();
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const nameStr = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const pwd = document.getElementById('password').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            if (pwd !== confirmPwd) {
+                errorMsg.textContent = "Passwords do not match.";
+                errorMsg.classList.remove('hidden');
+                return;
+            }
+            errorMsg.classList.add('hidden');
+
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin mx-auto"></i>';
+            lucide.createIcons();
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pwd);
+                const user = userCredential.user;
+                
+                // Update Firebase display name
+                await updateProfile(user, {
+                    displayName: nameStr
+                });
+                
+                try {
+                    // Store user securely in Firestore database
+                    await setDoc(doc(db, "users", user.uid), {
+                        uid: user.uid,
+                        email: user.email,
+                        displayName: nameStr,
+                        photoURL: "",
+                        createdAt: serverTimestamp(),
+                        lastLogin: serverTimestamp(),
+                        authProvider: "email"
+                    });
+                } catch (dbError) {
+                    console.warn("Could not save to Firestore during Email registration. Proceeding...", dbError);
+                }
+                
+                // Initialize local gamification state
+                const newUser = {
+                    username: nameStr || "BinWarrior",
+                    xp: 0,
+                    level: 1,
+                    avatar: "" 
+                };
+                localStorage.setItem("binbot_user", JSON.stringify(newUser));
+                
+                showToast("Account created successfully! Redirecting to login...", "success");
+                setTimeout(() => { window.location.href = "login.html"; }, 2000);
+            } catch (error) {
+                console.error("Registration Error:", error);
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMsg.textContent = "An account with this email already exists.";
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg.textContent = "Password should be at least 6 characters.";
+                } else if (error.code === 'auth/invalid-api-key') {
+                    errorMsg.textContent = "Firebase is not configured. Please add your config to firebase-config.js";
+                } else {
+                    errorMsg.textContent = error.message;
+                }
+                
+                errorMsg.classList.remove('hidden');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
+            }
+        });
+
+        // Google Sign-In / Sign-Up
+        const googleBtn = document.getElementById("google-btn");
+        googleBtn.addEventListener("click", async () => {
+            const originalContent = googleBtn.innerHTML;
+            googleBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 text-white animate-spin mx-auto"></i>';
+            lucide.createIcons();
+            googleBtn.disabled = true;
+            
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                
+                try {
+                    // Check if user exists in Firestore
+                    const userDocRef = doc(db, "users", user.uid);
+                    const userDocSnap = await getDoc(userDocRef);
+                    
+                    if (!userDocSnap.exists()) {
+                        // This is a new user via Google
+                        await setDoc(userDocRef, {
+                            uid: user.uid,
+                            email: user.email,
+                            displayName: user.displayName || "BinWarrior",
+                            photoURL: user.photoURL || "",
+                            createdAt: serverTimestamp(),
+                            lastLogin: serverTimestamp(),
+                            authProvider: "google"
+                        });
+                    } else {
+                        // Returning user via Google, simply update last login
+                        await setDoc(userDocRef, { 
+                            lastLogin: serverTimestamp() 
+                        }, { merge: true });
+                    }
+                } catch (dbError) {
+                    console.warn("Could not save to Firestore during Google registration. Proceeding...", dbError);
+                }
+                
+                // Initialize Gamification stats if this is their first time
+                if (!localStorage.getItem("binbot_user")) {
+                    const defaultUser = {
+                        username: user.displayName || "BinWarrior",
+                        xp: 0,
+                        level: 1,
+                        avatar: user.photoURL || ""
+                    };
+                    localStorage.setItem("binbot_user", JSON.stringify(defaultUser));
+                }
+                
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                console.error("Google Sign-In Error:", error);
+                const errorMsg = document.getElementById('error-msg');
+                if (error.code === 'auth/invalid-api-key') {
+                    errorMsg.textContent = "Firebase is not configured. Please add your config to firebase-config.js";
+                } else if (error.code !== 'auth/popup-closed-by-user') {
+                    errorMsg.textContent = "Failed to sign in with Google. Please try again.";
+                }
+                errorMsg.classList.remove('hidden');
+                googleBtn.innerHTML = originalContent;
+                googleBtn.disabled = false;
+            }
+        });
+    </script>
+
+    
+  <script src="js/ui-effects.js" defer></script>
+</body>
+
+</html>
+

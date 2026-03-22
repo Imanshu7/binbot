@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map - BinBot</title>
+  
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css?v=20260307">
+  <link rel="icon" href="favicon.png">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <!-- Leaflet Control Geocoder CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <!-- Leaflet Locate Control CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" />
+
+  <!-- Leaflet JS -->
+  
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Leaflet Control Geocoder JS -->
+  
+
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <!-- Leaflet Locate Control JS -->
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
+  
+  
+  <style>
+    #map {
+      width: 100%;
+      height: min(68vh, 620px);
+      min-height: 360px;
+      border-radius: 1.4rem;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      #map {
+        height: 50vh;
+        min-height: 300px;
+      }
+    }
+
+    .pf-footer {
+      border-top: 1px solid var(--border-color);
+      background: color-mix(in srgb, var(--surface-0) 92%, #000 8%);
+      backdrop-filter: blur(8px);
+      position: relative;
+      z-index: 10;
+      margin-top: 3rem;
+      width: 100%;
+    }
+    .pf-footer-wrap {
+      max-width: 80rem;
+      margin: 0 auto;
+      padding: 2.25rem 1rem 1.25rem;
+    }
+    .pf-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .pf-brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+    }
+    .pf-logo {
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--icon-accent-border);
+      color: var(--icon-accent);
+      background: color-mix(in srgb, var(--icon-accent-soft) 56%, transparent 44%);
+    }
+    .pf-name {
+      color: var(--text-color);
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .pf-copy {
+      margin: 0.75rem 0 0;
+      color: var(--text-muted);
+      line-height: 1.55;
+      max-width: 32ch;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .pf-nav-title {
+      color: var(--text-color);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem;
+      display: block;
+    }
+    .pf-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+    }
+    .pf-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.42rem 0.74rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border-color) 88%, transparent 12%);
+      transition: all 0.2s ease;
+    }
+    .pf-links a:hover {
+      color: var(--text-color);
+      border-color: var(--border-hover);
+      background: color-mix(in srgb, var(--surface-hover) 55%, transparent 45%);
+    }
+    .pf-bottom {
+      margin-top: 1.4rem;
+      padding-top: 1rem;
+      border-top: 1px solid color-mix(in srgb, var(--border-color) 78%, transparent 22%);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .pf-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.1rem;
+      }
+      .pf-copy {
+        max-width: 100%;
+      }
+    }
+
+    :root[data-theme="light"] .pf-footer {
+      background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
+    }
+  </style>
+</head>
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+  <!-- Floating Navigation -->
+  <nav class="fixed top-0 w-full z-50 nav-glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex-shrink-0">
+          <a href="dashboard.html" class="flex items-center gap-2 group">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500/20 to-transparent border border-emerald-500/30 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <i data-lucide="leaf" class="w-4 h-4 text-emerald-400"></i>
+            </div>
+            <span class="font-bold tracking-tight text-white">BinBot</span>
+          </a>
+        </div>
+
+        <div class="hidden md:block">
+          <div class="flex items-baseline space-x-1">
+            <a href="dashboard.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Dashboard
+            </a>
+            <a href="classify.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Classify
+            </a>
+            <a href="history.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              History
+            </a>
+            <a href="analytics.html" class="mx-1 px-4 py-2 text-[#86868B] hover:text-white hover:bg-white/5 rounded-full text-xs font-semibold transition-all">
+              Analytics
+            </a>
+            <a href="map.html" class="mx-1 px-4 py-2 bg-white/10 text-white rounded-full text-xs font-semibold shadow-inner border border-white/5 transition-all">
+              Map
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden md:block">
+            <a href="profile.html" id="profile-trigger-btn" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 transition-all flex items-center justify-center overflow-hidden border border-white/20 shrink-0">
+                <i data-lucide="user" class="w-4 h-4 text-white"></i>
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <div class="-mr-2 flex md:hidden">
+          <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-full text-[#86868B] hover:text-white hover:bg-white/10 focus:outline-none transition-all">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#111111] border-b border-white/10">
+      <div class="px-4 pt-2 pb-4 space-y-1">
+        <a href="dashboard.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Dashboard</a>
+        <a href="classify.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Classify</a>
+        <a href="history.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">History</a>
+        <a href="analytics.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Analytics</a>
+        <a href="map.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-white bg-white/10">Map</a>
+        <a href="profile.html" class="block px-4 py-3 rounded-2xl text-base font-medium text-[#86868B] hover:text-white hover:bg-white/5">Profile</a>
+        <button onclick="handleLogout()" class="w-full text-left px-4 py-3 rounded-2xl text-base font-medium text-red-400 hover:bg-white/5 mt-2">Sign out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-glow bg-[#34C759] top-0 left-[-10%] hidden md:block"></div>
+
+  <!-- Main Content -->
+  <main class="relative z-10 pt-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      
+    <!-- Header -->
+    <div class="mb-8 text-center flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-left">
+            <h1 class="text-4xl font-black tracking-tight text-white mb-2">Recycling <span class="bg-gradient-to-r from-[#34C759] to-teal-400 text-transparent bg-clip-text">Map</span></h1>
+            <p class="text-[#86868B] font-medium text-sm">Find nearby recycling stores and drop-off points.</p>
+        </div>
+        
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap gap-2 justify-center md:justify-end">
+            <button onclick="filterStores('all')" data-category="all" class="filter-btn px-4 py-2 text-xs font-bold rounded-full bg-white/10 text-white border-2 border-white/40 hover:bg-white/20 transition-all shadow-sm" style="transform: scale(1.05);">All</button>
+            <button onclick="filterStores('Recycling')" data-category="Recycling" class="filter-btn px-4 py-2 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border-2 border-blue-500/30 hover:bg-blue-500/30 transition-all" style="opacity: 0.5;">Recycling</button>
+            <button onclick="filterStores('E-Waste')" data-category="E-Waste" class="filter-btn px-4 py-2 text-xs font-bold rounded-full bg-teal-500/20 text-teal-400 border-2 border-teal-500/30 hover:bg-teal-500/30 transition-all" style="opacity: 0.5;">E-Waste</button>
+            <button onclick="filterStores('Compost')" data-category="Compost" class="filter-btn px-4 py-2 text-xs font-bold rounded-full bg-[#34C759]/20 text-[#34C759] border-2 border-[#34C759]/30 hover:bg-[#34C759]/30 transition-all" style="opacity: 0.5;">Compost</button>
+            <button onclick="filterStores('Paper')" data-category="Paper" class="filter-btn px-4 py-2 text-xs font-bold rounded-full bg-yellow-500/20 text-yellow-500 border-2 border-yellow-500/30 hover:bg-yellow-500/30 transition-all" style="opacity: 0.5;">Paper</button>
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div class="bento-card p-2 md:p-4 relative overflow-hidden group">
+      <!-- Glow behind map -->
+      <div class="absolute inset-0 bg-gradient-to-b from-teal-500/10 to-transparent opacity-50 pointer-events-none z-0"></div>
+      
+      <!-- Actual Map -->
+      <div id="map" class="shadow-[0_0_30px_rgba(0,0,0,0.5)]"></div>
+    </div>
+
+  </main>
+  
+
+  <script type="module">
+    import { auth, onAuthStateChanged, signOut } from './firebase-config.js';
+
+    lucide.createIcons();
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            window.location.href = "login.html";
+        } else {
+            // Render avatar dynamically
+            const avatarContainer = document.getElementById("profile-trigger-btn");
+            let gamifyStr = localStorage.getItem("binbot_user");
+            let gamifyUser = gamifyStr ? JSON.parse(gamifyStr) : {};
+            const finalAvatar = gamifyUser.avatar || user.photoURL;
+            if(avatarContainer && finalAvatar && finalAvatar !== "null" && finalAvatar !== "undefined") {
+                avatarContainer.innerHTML = `<img src="${finalAvatar}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i data-lucide=\\'user\\' class=\\'w-4 h-4 text-white\\'></i>'; if(window.lucide) window.lucide.createIcons();" />`;
+            }
+        }
+    });
+
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            localStorage.removeItem("token");
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Logout Error:", error);
+        }
+    };
+
+    // Map Global Variables
+    let map;
+    let baseTileLayer;
+    let markersLayer = L.layerGroup();
+    let currentFilter = "all";
+    let currentMapTheme = null;
+
+    function getThemeMode() {
+        const attrTheme = document.documentElement.getAttribute('data-theme');
+        if (attrTheme === 'light' || attrTheme === 'dark') return attrTheme;
+        const saved = localStorage.getItem('binbot_theme_mode');
+        if (saved === 'light' || saved === 'dark') return saved;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function setMapTheme(theme) {
+        if (!map) return;
+
+        if (baseTileLayer) {
+            map.removeLayer(baseTileLayer);
+        }
+
+        const isLight = theme === 'light';
+        const tileUrl = isLight
+            ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        const attribution = isLight
+            ? '&copy; OpenStreetMap contributors'
+            : '&copy; OpenStreetMap contributors &copy; CARTO';
+
+        baseTileLayer = L.tileLayer(tileUrl, {
+            attribution,
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+    }
+    
+    // Sample Recycling Stores extended (fallback for NY)
+    const allStores = [
+        { name: "EcoCenter Drop-off", lat: 40.7228, lng: -74.0080, type: "General Recycling", category: "all", address: "123 Green Ave.", icon: "R", color: "#34C759" },
+        { name: "City Scrap & Metal", lat: 40.7100, lng: -74.0150, type: "E-Waste & Metal", category: "E-Waste", address: "45 Industrial Pkwy.", icon: "E", color: "#14B8A6" },
+        { name: "Green Earth Paper", lat: 40.7300, lng: -73.9900, type: "Paper & Cardboard", category: "Paper", address: "89 Paper St.", icon: "P", color: "#EAB308" },
+        { name: "Community Compost Hub", lat: 40.7050, lng: -73.9990, type: "Compost", category: "Compost", address: "Community Garden 4", icon: "C", color: "#34C759" },
+        { name: "TechRescue E-Waste", lat: 40.7400, lng: -73.9800, type: "E-Waste", category: "E-Waste", address: "Tech Hub Route 1", icon: "E", color: "#14B8A6" },
+        { name: "Uptown Paper Recycling", lat: 40.7500, lng: -73.9700, type: "Paper", category: "Paper", address: "Central Ave. Box 12", icon: "P", color: "#EAB308" }
+    ];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Fast instant map load (Default: New Delhi)
+        const defaultLocation = [28.6139, 77.2090];
+        
+        map = L.map('map', {
+            center: defaultLocation,
+            zoom: 13,
+            zoomControl: false // We will move it to a better position
+        });
+
+        // Add Zoom Control to Bottom Right
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        currentMapTheme = getThemeMode();
+        setMapTheme(currentMapTheme);
+
+        const themeObserver = new MutationObserver(() => {
+            const nextTheme = getThemeMode();
+            if (nextTheme === currentMapTheme) return;
+            currentMapTheme = nextTheme;
+            setMapTheme(currentMapTheme);
+        });
+        themeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme']
+        });
+
+        // Add Search (Geocoder) Control
+        let searchMarker;
+        L.Control.geocoder({
+            defaultMarkGeocode: false,
+            position: 'topleft',
+            placeholder: 'Search location...'
+        })
+        .on('markgeocode', function(e) {
+            map.flyToBounds(e.geocode.bbox);
+            
+            if (searchMarker) {
+                map.removeLayer(searchMarker);
+            }
+            const searchIcon = L.divIcon({
+                html: `<div class="custom-marker" style="background-color: #000; border: 2px solid #EAB308; color: #EAB308;">S</div>`,
+                className: '',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+            searchMarker = L.marker(e.geocode.center, { icon: searchIcon })
+                .addTo(map)
+                .bindPopup(`<b>${e.geocode.name}</b>`)
+                .openPopup();
+                
+            fetchStoresNear(e.geocode.center.lat, e.geocode.center.lng);
+        })
+        .addTo(map);
+
+        // Add Locate Control (Handles Geolocation async without blocking)
+        L.control.locate({
+            position: 'bottomright',
+            icon: 'lucide-crosshair',
+            strings: { title: "Show me where I am" },
+            locateOptions: { enableHighAccuracy: true, maxZoom: 14 }
+        }).addTo(map);
+
+        markersLayer.addTo(map);
+        renderStores("all");
+
+        // Fetch stores for default location immediately
+        fetchStoresNear(defaultLocation[0], defaultLocation[1]);
+
+        // Fetch REAL recycling stores near user dynamically using Overpass API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const userLat = position.coords.latitude;
+                const userLng = position.coords.longitude;
+                map.setView([userLat, userLng], 13);
+                
+                // Add user marker
+                const userIcon = L.divIcon({
+                    html: `<div class="custom-marker" style="background-color: #000; border: 2px solid #10B981; color: #10B981;">U</div>`,
+                    className: '',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
+                L.marker([userLat, userLng], { icon: userIcon }).addTo(map).bindPopup("<b>You are here</b>").openPopup();
+                
+                // Fetch real data from OpenStreetMap Overpass API (approx 50km radius around user)
+                fetchStoresNear(userLat, userLng);
+                
+            }, () => {
+                // Keep default stores if geolocation gets blocked
+            });
+        }
+
+        // Re-fetch points as the user pans or zooms around the world
+        map.on('moveend', function() {
+            const center = map.getCenter();
+            // Optional: Only fetch if zoomed in enough to prevent querying the whole continent
+            if (map.getZoom() > 10) {
+                fetchStoresNear(center.lat, center.lng);
+            }
+        });
+    });
+
+    const API_BASE = window.location.hostname === 'localhost'
+      ? 'http://localhost:8000'
+      : 'https://binbot-apis.onrender.com';
+
+    async function fetchStoresNear(lat, lng) {
+    try {
+        const res = await fetch(`${API_BASE}/api/stores?lat=${lat}&lng=${lng}`);
+        const data = await res.json();
+        
+        if (data.success) {
+            const existingCoords = new Set(allStores.map(s => `${s.lat},${s.lng}`));
+            
+            data.stores.forEach(store => {
+                if (!existingCoords.has(`${store.lat},${store.lng}`)) {
+                    allStores.push(store);
+                    existingCoords.add(`${store.lat},${store.lng}`);
+                }
+            });
+            
+            renderStores(currentFilter);
+        }
+    } catch (err) {
+        console.error("Stores fetch failed:", err);
+    }
+}
+
+    function renderStores(filterCategory) {
+        markersLayer.clearLayers();
+        let found = 0;
+        
+        allStores.forEach(store => {
+            if (filterCategory === "all" || store.category === filterCategory) {
+                found++;
+                const customIcon = L.divIcon({
+                    html: `<div class="custom-marker" style="background-color: ${store.color}; shadow-color: ${store.color}">${store.icon}</div>`,
+                    className: '',
+                    iconSize: [32, 32],
+                    iconAnchor: [16, 16]
+                });
+
+                const popupContent = `
+                    <div class="p-2 min-w-[200px]">
+                        <h3 class="font-bold text-white text-base mb-1 flex items-center gap-2">
+                            ${store.icon} ${store.name}
+                        </h3>
+                        <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold mb-2 border" style="color: ${store.color}; border-color: ${store.color}50; background-color: ${store.color}20">
+                            ${store.type}
+                        </span>
+                        <p class="text-[#86868B] text-xs flex items-center gap-1 mt-1">
+                            <i data-lucide="map-pin" class="w-3 h-3"></i> ${store.address}
+                        </p>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${store.lat},${store.lng}" target="_blank" class="mt-3 block w-full py-1.5 bg-white text-black text-center text-xs font-bold rounded hover:bg-gray-200 transition-colors">
+                            Get Directions
+                        </a>
+                    </div>
+                `;
+                
+                const marker = L.marker([store.lat, store.lng], { icon: customIcon })
+                 .bindPopup(popupContent);
+                
+                markersLayer.addLayer(marker);
+            }
+        });
+
+        // Re-initialize lucide icons inside popups asynchronously
+        map.on('popupopen', function() {
+            lucide.createIcons();
+        });
+    }
+
+    window.filterStores = function(category) {
+        currentFilter = category;
+        renderStores(category);
+        
+        // Update button active states
+        const buttons = document.querySelectorAll('.filter-btn');
+        buttons.forEach(btn => {
+            if(btn.dataset.category === category) {
+                btn.style.opacity = '1';
+                btn.style.transform = 'scale(1.05)';
+                btn.style.borderWidth = '2px';
+            } else {
+                btn.style.opacity = '0.5';
+                btn.style.transform = 'scale(1)';
+                btn.style.borderWidth = '1px';
+            }
+        });
+    }
+  </script>
+  
+  <style>
+      /* Fix locate icon using lucide if needed or default font */
+      .leaflet-control-locate a {
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+      }
+      .leaflet-control-locate a::before {
+          content: 'LOC';
+          font-size: 16px;
+      }
+  </style>
+  
+
+  
+  <footer class="pf-footer">
+    <div class="pf-footer-wrap">
+      <div class="pf-footer-grid">
+        <div>
+          <a href="index.html" class="pf-brand-link">
+            <span class="pf-logo" aria-hidden="true">
+              <i data-lucide="leaf" class="w-4 h-4"></i>
+            </span>
+            <span class="pf-name">BinBot</span>
+          </a>
+          <p class="pf-copy">Sort smarter, recycle faster, and build daily habits for a cleaner planet.</p>
+        </div><br><br>
+
+        <nav aria-label="Legal links">
+          <span class="pf-nav-title">Legal</span>
+          <div class="pf-links">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="pf-bottom">&copy; 2026 BinBot. Built for a greener planet.</div>
+    </div>
+  </footer>
+<script src="js/ui-effects.js" defer></script>
+</body>
+</html>
+
