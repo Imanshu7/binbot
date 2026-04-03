@@ -5,7 +5,7 @@ fastapi
 uvicorn
 python-multipart
 Pillow
-tensorflow
+tensorflow-cpu
 pydantic
 httpx
 python-dotenv
