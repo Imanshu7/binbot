@@ -1,4 +1,10 @@
 fastapi==0.103.1
 uvicorn==0.23.2
 numpy
+fastapi
+uvicorn
+python-multipart
+Pillow
 pydantic
+httpx
+python-dotenv
