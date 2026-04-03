@@ -111,7 +111,7 @@ class ChatRequest(BaseModel):
 async def chat(req: ChatRequest):
     
     # 🔴 APNI OPENROUTER API KEY YAHAN DAALEIN 🔴
-    OPENROUTER_API_KEY = (OPENROUTER_API_KEY)
+    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
     
     if not OPENROUTER_API_KEY:
         return {"success": False, "message": "API key is missing"}
