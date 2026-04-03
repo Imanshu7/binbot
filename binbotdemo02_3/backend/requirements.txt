@@ -8,3 +8,4 @@ Pillow
 pydantic
 httpx
 python-dotenv
+tensorflow
