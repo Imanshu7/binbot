@@ -131,7 +131,7 @@ async def chat(req: ChatRequest):
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:8000", # Apni site ka URL
+        "HTTP-Referer": "https://binbotai.vercel.app", # Apni site ka URL
         "X-Title": "Wasti AI BinBot"
     }
     
