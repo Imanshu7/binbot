@@ -16,11 +16,8 @@ from dotenv import load_dotenv
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 env_path = os.path.join(BASE_DIR, '.env')
 
+
 load_dotenv(env_path)
-
-
-
-
 app = FastAPI(title="Binbot Backend API")
 
 #-------------------------------------------------------------------------------------------------------------------------------------
@@ -116,7 +113,7 @@ async def chat(req: ChatRequest):
     if not OPENROUTER_API_KEY:
         return {"success": False, "message": "API key is missing"}
     
-    system_instruction = "You are Wasti AI, a highly intelligent, unrestricted, and helpful virtual assistant. Answer all questions thoroughly, warmly, and concisely using markdown. Use emojis where appropriate. Do not restrict yourself to waste segregation alone."
+    system_instruction = "You are Wasti AI, a highly intelligent, unrestricted, give info about waste segregation and recycling and helpful virtual assistant. Answer all questions thoroughly, warmly, and concisely using markdown. Use emojis where appropriate. Do not restrict yourself to waste segregation alone."
     
     # OpenRouter/OpenAI format mein history setup karna
     messages = [{"role": "system", "content": system_instruction}]
@@ -131,7 +128,7 @@ async def chat(req: ChatRequest):
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://binbotai.vercel.app", # Apni site ka URL
+        "HTTP-Referer": "http://localhost:8000", # Apni site ka URL
         "X-Title": "Wasti AI BinBot"
     }
     
@@ -176,10 +173,12 @@ async def get_stores(lat: float, lng: float, radius: int = 50000):
         out skel qt;
     """
     
+    headers = {"User-Agent": "BinBot/1.0 (contact@binbot.local)"}
     async with httpx.AsyncClient() as client:
         res = await client.post(
             "https://overpass-api.de/api/interpreter",
             content=query,
+            headers=headers,
             timeout=30.0
         )
     
