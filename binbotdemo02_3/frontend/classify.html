@@ -263,7 +263,7 @@
                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#86868B]">
                           <i data-lucide="search" class="w-4 h-4"></i>
                        </div>
-                       <input type="text" id="waste-input" autocomplete="off" placeholder="e.g., Apple peel..." class="w-full bg-[#000000]/60 border border-white/10 rounded-xl pl-11 pr-4 py-4 text-white placeholder-[#86868B] focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium">
+                       <input type="text" id="waste-input" autocomplete="off" placeholder="e.g. apple peel..." class="w-full bg-[#000000]/60 border border-white/10 rounded-xl pl-11 pr-4 py-4 text-white placeholder-[#86868B] focus:outline-none focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all text-sm font-medium">
                    </div>
                    <button id="mic-btn" class="shrink-0 w-14 h-14 bg-white/5 border border-white/10 hover:border-white/30 hover:bg-white/10 rounded-xl flex items-center justify-center transition-all group/mic" title="Voice Search">
                        <i data-lucide="mic" class="w-5 h-5 text-white transition-transform group-hover/mic:scale-110"></i>
@@ -328,15 +328,6 @@
     <!-- Floating XP Toast Container -->
     <div id="xp-toast-container" class="fixed bottom-24 right-4 z-50 flex flex-col items-end gap-2 pointer-events-none"></div>
   </div>
-
-  <!-- Load AI Models (Deferred to prevent rendering block) -->
-  
-
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js" defer crossorigin="anonymous"></script>
-  
-
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@latest" defer crossorigin="anonymous"></script>
-  
 
   <script type="module">
     import { auth, onAuthStateChanged, signOut, db, collection, addDoc } from './firebase-config.js';
@@ -406,6 +397,8 @@
 
     // Global State
     let isVoiceOutputEnabled = true;
+
+
 
     // --- Voice Output (TTS) ---
     function speakText(text) {
@@ -508,6 +501,10 @@
        if (tipText) spokenPhrase += ` Tip: ${tipText}`;
        speakText(spokenPhrase);
     }
+//Api logic
+    const API_BASE = window.location.hostname === 'localhost'
+      ? 'http://localhost:8000'
+      : 'https://binbot-apis.onrender.com';
 
     async function executeAnalysis(itemName, isImage) {
        hideResult();
@@ -526,9 +523,9 @@
 
        try {
            // Simulate a tiny delay for physical realism if it's too fast
-           if (!isImage) { await new Promise(r => setTimeout(r, 600)); }
-           
-           const res = await fetch("https://binbot-apis.onrender.com/api/classify", {
+           if (!isImage) { await new Promise(r => setTimeout(r, 500)); }
+
+           const res = await fetch(`${API_BASE}/api/classify`, {
                method: "POST",
                headers: { "Content-Type": "application/json" },
                body: JSON.stringify({ item: itemName }) // Send the actual item name
@@ -698,7 +695,7 @@
             icon.classList.add("text-white");
             icon.classList.remove("text-red-500", "animate-pulse");
         }
-        wasteInput.placeholder = "e.g., Coffee cup...";
+        wasteInput.placeholder = "e.g., Apple peel...";
     }
 
     micBtn.addEventListener("click", () => {
@@ -729,26 +726,6 @@
         }
     });
 
-    // --- TensorFlow.js Image Analysis (Vision) ---
-    let model = null;
-    
-    // Asynchronously load the model once the library is available on the window
-    async function initModel() {
-        if (typeof mobilenet !== 'undefined') {
-            try {
-                model = await mobilenet.load();
-                console.log("MobileNet model loaded successfully!");
-            } catch (e) {
-                console.error("Failed to load MobileNet", e);
-            }
-        } else {
-            // If the script is deferred, wait and poll
-            setTimeout(initModel, 500);
-        }
-    }
-    
-    // Start polling immediately
-    initModel();
 
     dropZone.addEventListener("click", () => {
        if(!dropZone.classList.contains("is-scanning")) {
@@ -779,12 +756,6 @@
             const originalText = statusText.textContent;
             const originalSub = statusSub.textContent;
             
-            // Wait for model download if they clicked fast!
-            if (!model) {
-                 statusText.textContent = "Downloading AI Engine...";
-                 statusSub.textContent = "This takes a moment on first load";
-                 while(!model) { await new Promise(r => setTimeout(r, 500)); } // Wait forever until loaded
-            }
             
             statusText.textContent = "Analyzing Visuals...";
             statusSub.textContent = "Processing ML model";
@@ -793,12 +764,18 @@
             setTimeout(async () => {
                 try {
                     // Start TensorFlow.js Analysis physically
-                    const predictions = await model.classify(imagePreview);
-                    console.log("Predictions:", predictions);
-                    
-                    if (predictions && predictions.length > 0) {
-                        let topPrediction = predictions[0].className.split(',')[0].trim();
-                        await executeAnalysis(topPrediction, true);
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    // note: in production, change fetch URL to backend hosted link instead of localhost
+                    const res = await fetch(`${API_BASE}/api/classify-image`, {
+                        method: "POST",
+                        body: formData
+                    });
+                    const data = await res.json();
+
+                    // Reuse existing result display logic
+                    if (data.success) {
+                        await executeAnalysis(data.item, true);
                     } else {
                         await executeAnalysis("Unknown Item", true);
                     }

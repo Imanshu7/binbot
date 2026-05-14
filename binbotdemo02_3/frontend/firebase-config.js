@@ -2,10 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// firebase project configuration - copy-pasted from Firebase console
-// (Project Settings -> General -> Your apps -> SDK setup and configuration)
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAXUyNTwSQhKeATOabv5f7VBnvjajRdYaY",
+  apiKey: "AIzaSyAXUyNTwSQhKeATOabv5f7VBnvjajRdYaY", //NEW API KEY
   authDomain: "binbot-0.firebaseapp.com",
   projectId: "binbot-0",
   storageBucket: "binbot-0.firebasestorage.app",

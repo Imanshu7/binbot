@@ -154,6 +154,23 @@
     :root[data-theme="light"] .pf-footer {
       background: color-mix(in srgb, var(--surface-0) 78%, #ffffff 22%);
     }
+
+    .custom-marker {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+    .custom-marker:hover {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body class="selection:bg-emerald-500/30 selection:text-white">
@@ -332,17 +349,17 @@
         }).addTo(map);
     }
     
-    // Sample Recycling Stores extended (fallback for NY)
+    // Sample Recycling Stores extended (fallback for New Delhi to match default map center)
     const allStores = [
-        { name: "EcoCenter Drop-off", lat: 40.7228, lng: -74.0080, type: "General Recycling", category: "all", address: "123 Green Ave.", icon: "R", color: "#34C759" },
-        { name: "City Scrap & Metal", lat: 40.7100, lng: -74.0150, type: "E-Waste & Metal", category: "E-Waste", address: "45 Industrial Pkwy.", icon: "E", color: "#14B8A6" },
-        { name: "Green Earth Paper", lat: 40.7300, lng: -73.9900, type: "Paper & Cardboard", category: "Paper", address: "89 Paper St.", icon: "P", color: "#EAB308" },
-        { name: "Community Compost Hub", lat: 40.7050, lng: -73.9990, type: "Compost", category: "Compost", address: "Community Garden 4", icon: "C", color: "#34C759" },
-        { name: "TechRescue E-Waste", lat: 40.7400, lng: -73.9800, type: "E-Waste", category: "E-Waste", address: "Tech Hub Route 1", icon: "E", color: "#14B8A6" },
-        { name: "Uptown Paper Recycling", lat: 40.7500, lng: -73.9700, type: "Paper", category: "Paper", address: "Central Ave. Box 12", icon: "P", color: "#EAB308" }
+        { name: "Connaught Place Eco Drop", lat: 28.6315, lng: 77.2167, type: "General Recycling", category: "all", address: "Connaught Place, ND", icon: "R", color: "#34C759" },
+        { name: "Nehru Place E-Waste Hub", lat: 28.5494, lng: 77.2523, type: "E-Waste & Metal", category: "E-Waste", address: "Nehru Place Market", icon: "E", color: "#14B8A6" },
+        { name: "Okhla Paper Recycling", lat: 28.5355, lng: 77.2710, type: "Paper & Cardboard", category: "Paper", address: "Okhla Phase 2", icon: "P", color: "#EAB308" },
+        { name: "Lodhi Garden Compost", lat: 28.5933, lng: 77.2197, type: "Compost", category: "Compost", address: "Lodhi Gardens", icon: "C", color: "#34C759" },
+        { name: "Lajpat Nagar E-Waste", lat: 28.5677, lng: 77.2433, type: "E-Waste", category: "E-Waste", address: "Central Market Lajpat Nagar", icon: "E", color: "#14B8A6" },
+        { name: "Karol Bagh Paper Bin", lat: 28.6519, lng: 77.1901, type: "Paper", category: "Paper", address: "Karol Bagh Main Road", icon: "P", color: "#EAB308" }
     ];
 
-    document.addEventListener("DOMContentLoaded", () => {
+    function initMapApp() {
         // Fast instant map load (Default: New Delhi)
         const defaultLocation = [28.6139, 77.2090];
         
@@ -443,93 +460,43 @@
                 fetchStoresNear(center.lat, center.lng);
             }
         });
-    });
-
-    function fetchStoresNear(lat, lng) {
-        const radius = 50000; // meters (50km radius)
-        const query = `
-            [out:json][timeout:25];
-            (
-              node["amenity"="recycling"](around:${radius},${lat},${lng});
-              way["amenity"="recycling"](around:${radius},${lat},${lng});
-              node["amenity"="waste_basket"](around:${radius},${lat},${lng});
-              node["amenity"="waste_disposal"](around:${radius},${lat},${lng});
-              node["amenity"="waste_transfer_station"](around:${radius},${lat},${lng});
-            );
-            out body;
-            >;
-            out skel qt;
-        `;
-        const url = "https://overpass-api.de/api/interpreter";
-        
-        fetch(url, {
-            method: "POST",
-            body: query
-        })
-        .then(response => response.json())
-        .then(data => {
-            if(data && data.elements) {
-                const existingCoords = new Set(allStores.map(s => `${s.lat},${s.lng}`));
-
-                data.elements.forEach(element => {
-                    if (element.type === "node" || (element.type === "way" && element.center)) {
-                        const elLat = element.lat || element.center.lat;
-                        const elLon = element.lon || element.center.lon;
-                        
-                        if (existingCoords.has(`${elLat},${elLon}`)) return;
-                        
-                        const tags = element.tags || {};
-                        const type = tags["recycling_type"] || tags["amenity"] || "General Recycling";
-                        let category = "Recycling";
-                        let icon = "R";
-                        let color = "#3B82F6"; // Blue for generic recycling/waste
-
-                        if (tags["amenity"] === "waste_basket") {
-                            icon = "D";
-                            category = "Recycling";
-                        }
-                        
-                        // Map real OSM tags to our UI categories
-                        if (tags["recycling:batteries"] || tags["recycling:electrical_appliances"] || tags["recycling:scrap_metal"]) {
-                            category = "E-Waste";
-                            icon = "E";
-                            color = "#14B8A6";
-                        } else if (tags["recycling:cardboard"] || tags["recycling:paper"] || tags["recycling:magazines"]) {
-                            category = "Paper";
-                            icon = "P";
-                            color = "#EAB308";
-                        } else if (tags["recycling:green_waste"] || tags["recycling:organic"]) {
-                            category = "Compost";
-                            icon = "C";
-                            color = "#34C759";
-                        } else if (tags["amenity"] === "recycling" || tags["recycling_type"]) {
-                            category = "Recycling";
-                            icon = "R";
-                            color = "#3B82F6";
-                        }
-                        
-                        allStores.push({
-                            name: tags.name || tags.operator || "Public Recycling Point",
-                            lat: elLat,
-                            lng: elLon,
-                            type: type,
-                            category: category,
-                            address: (tags["addr:street"] ? tags["addr:street"] + (tags["addr:housenumber"] ? " " + tags["addr:housenumber"] : "") : "Location details not specified"),
-                            icon: icon,
-                            color: color
-                        });
-                        existingCoords.add(`${elLat},${elLon}`);
-                    }
-                });
-                
-                // Render the newly fetched actual stores
-                renderStores(currentFilter);
-            }
-        })
-        .catch(err => {
-            console.error("Overpass API failed:", err);
-        });
     }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener("DOMContentLoaded", initMapApp);
+    } else {
+        initMapApp();
+    }
+
+    const isLocal = window.location.hostname === 'localhost' || 
+                    window.location.hostname === '127.0.0.1' || 
+                    window.location.protocol === 'file:';
+
+    const API_BASE = isLocal
+      ? 'http://127.0.0.1:8000'
+      : 'https://binbot-apis.onrender.com';
+
+    async function fetchStoresNear(lat, lng) {
+    try {
+        const res = await fetch(`${API_BASE}/api/stores?lat=${lat}&lng=${lng}`);
+        const data = await res.json();
+        
+        if (data.success) {
+            const existingCoords = new Set(allStores.map(s => `${s.lat},${s.lng}`));
+            
+            data.stores.forEach(store => {
+                if (!existingCoords.has(`${store.lat},${store.lng}`)) {
+                    allStores.push(store);
+                    existingCoords.add(`${store.lat},${store.lng}`);
+                }
+            });
+            
+            renderStores(currentFilter);
+        }
+    } catch (err) {
+        console.error("Stores fetch failed:", err);
+    }
+}
 
     function renderStores(filterCategory) {
         markersLayer.clearLayers();
