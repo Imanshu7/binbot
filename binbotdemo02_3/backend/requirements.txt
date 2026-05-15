@@ -9,4 +9,4 @@ tensorflow-cpu
 pydantic
 httpx
 python-dotenv
-python==3.12
+
