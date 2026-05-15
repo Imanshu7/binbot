@@ -100,8 +100,8 @@
                   window.location.protocol === 'file:'; // File protocol allow kiya
 
   const API_BASE = isLocal 
-    ? 'http://127.0.0.1:8000'  // Local Python Server (Uvicorn default port 8000)
-    : 'https://binbot-apis.onrender.com'; // Production Server
+    ? 'http://127.0.0.1:8000'  // Local Python Server 
+    : 'https://binbot-82ef.onrender.com'; // Production Server
 
   const container = document.createElement('div');
   container.className = "font-sans";
