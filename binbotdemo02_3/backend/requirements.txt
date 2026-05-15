@@ -5,7 +5,7 @@ fastapi
 uvicorn
 python-multipart
 Pillow
-tensorflow-cpu
+tensorflow-cpu==2.15.0
 pydantic
 httpx
 python-dotenv
